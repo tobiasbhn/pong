@@ -1,5 +1,7 @@
 class UserController < ActionController::Base
+  layout 'application'
+
   def create
-    render plain: 'user#create'
+    
   end
 end

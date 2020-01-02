@@ -1,5 +1,7 @@
 class GameController < ActionController::Base
+  layout 'application'
+
   def create
-    render plain: 'game#create'
+    
   end
 end
