@@ -1,9 +1,11 @@
 class ApplicationController < ActionController::Base
+  layout 'application'
+
   def index
     
   end
 
   def show
-    render plain: 'application#show: ' + params[:game_id]
+    
   end
 end
