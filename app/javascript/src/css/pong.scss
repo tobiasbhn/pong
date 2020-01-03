@@ -1,3 +1,11 @@
+@import "~bootstrap/scss/bootstrap";
+@mixin sm {
+  @include media-breakpoint-up(sm) {
+    @content;
+  }
+}
+
 body {
   background-color: black;
+  color: white;
 }
