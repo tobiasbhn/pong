@@ -1,4 +1,14 @@
 GIT
+  remote: https://github.com/trailblazer/reform
+  revision: 9430db33fe5a525a228c3bd1658c0cb6ecba1ab1
+  branch: v2.3.0.rc2
+  specs:
+    reform (2.3.0.rc2)
+      disposable (>= 0.4.2, < 0.5.0)
+      representable (>= 2.4.0, < 3.1.0)
+      uber (< 0.2.0)
+
+GIT
   remote: https://github.com/trailblazer/trailblazer.git
   revision: 37318eadf1fcffb8eb976ebc2988e6672953673a
   specs:
@@ -178,9 +188,9 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    reform (2.2.4)
-      disposable (>= 0.4.1)
-      representable (>= 2.4.0, < 3.1.0)
+    reform-rails (0.2.0.rc3)
+      activemodel (>= 3.2)
+      reform (>= 2.3.0.rc1, < 3.0.0)
     regexp_parser (1.6.0)
     representable (3.0.4)
       declarative (< 0.1.0)
@@ -282,6 +292,8 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   puma (~> 4.1)
   rails (~> 6.0.2, >= 6.0.2.1)
+  reform!
+  reform-rails (~> 0.2.0.rc2)
   sass-rails (>= 6)
   selenium-webdriver
   spring

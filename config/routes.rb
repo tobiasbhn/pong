@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  root 'application#index'
-  get '/host', to: 'game#create'
-  get '/join', to: 'user#create'
+  # For all normal Frontend-Pages
+  root 'application#index', as: 'index'
+  get '/host', to: 'application#game', as: 'new_game'
+  get '/join', to: 'application#user', as: 'new_user'
+  # 'Secured'
+  get '/game/:game_id', to: 'application#show', as: 'game'
 
-  get '/:game_id', to: 'application#show'
+
+  # Backend Stuff
+  post '/game/create', to: 'game#create', as: 'create_game'
+  post '/user/create', to: 'user#create', as: 'create_user'
 end
