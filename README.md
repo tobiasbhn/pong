@@ -9,4 +9,9 @@ This Repository will be used building an dynamic Webapplication running on Ruby 
   * Only One User can Host a Game
   * All other User are either playing or in Queue, if theire alredy authenticated
   * If their not authenticated, the dynamic Game Page `/game/:id` will function as Invite Link
-  * One User can?/cannot? open one Game in multiple Tabs or Browser Windows
+  * One User ~~can/~~cannot open one Game in multiple Tabs or Browser Windows
+  * If the User opens the same Game in multiple Tabs/Windows, it will output a brief massage. (e.g. 'If you want to Play against each other on the same Machine, please use Spitscreen Mode.')
+
+* Reload / Revisit
+  * If I reload the Page as a Host, I want to continue the same Game, but restart the Round
+  * If I reload the Page as a Player, I want to stay in the same Game, but will be at the End of the Queue
