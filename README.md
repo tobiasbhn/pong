@@ -1,24 +1,12 @@
-# README
+# PONG
+## Introducion
+This Repository will be used building an dynamic Webapplication running on Ruby on Rails. This Application should allow the User to play the traditional PONG Game Online. In addition, there will be special Mode (Party Mode) which lets the User control their Game via their Smartphones.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Behaviour Examples
+* Multiple Pages:
+  * If a user visits one of the static Pages Multiple times, noting changes.
+  * If a user visit the dynamic Game Page `/game/:id` it will decide which Action will be performed (Host, Play, Queue, Invite)
+  * Only One User can Host a Game
+  * All other User are either playing or in Queue, if theire alredy authenticated
+  * If their not authenticated, the dynamic Game Page `/game/:id` will function as Invite Link
+  * One User can?/cannot? open one Game in multiple Tabs or Browser Windows

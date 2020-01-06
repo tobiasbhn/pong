@@ -2,23 +2,23 @@ class ApplicationController < ActionController::Base
   before_action :authenticate!, only: :show
 
   def index
-    
+    # TODO
   end
 
   def game
-
+    # TODO
   end
 
   def user
-
+    # TODO
   end
 
   def show
-    
+    # TODO
   end
 
+  
   private
-
   def authenticated?
     id = cookies.encrypted[:id]
     if Consumer.exists?(id: id)
