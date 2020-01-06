@@ -17,15 +17,22 @@ class ApplicationController < ActionController::Base
     # TODO
   end
 
-  
+
   private
   def authenticated?
-    id = cookies.encrypted[:id]
+    id = cookies.encrypted[:_pong_id]
     if Consumer.exists?(id: id)
       consumer = Consumer.find(id)
+
+      # check if connection to right game
       game_id = consumer.consumable_type == "Game" ? consumer.consumable.id : consumer.consumable.game_id
-      game_id == params[:game_id].to_i
+      if !(game_id == params[:game_id].to_i)
+        flash[:alert] = "Wrong Game."
+        return false
+      end
+      true
     else
+      flash[:alert] = "No Cookie."
       false
     end
   end
@@ -34,7 +41,6 @@ class ApplicationController < ActionController::Base
     if authenticated?
       true
     else
-      flash[:alert] = "Something went wrong."
       redirect_to index_path
     end
   end

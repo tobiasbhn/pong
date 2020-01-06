@@ -5,6 +5,7 @@ class Game::Create < Trailblazer::Operation
   step :define_key!
   step Contract::Validate(key: :game)
   step Contract::Persist()
+  pass :kick_old_consumer!
 
   def define_id!(options, params:, **)
     params[:game][:id]
@@ -21,5 +22,13 @@ class Game::Create < Trailblazer::Operation
     cap_space = ('A'..'H').to_a + ('J'..'K').to_a + ('M'..'Z').to_a
     params[:game][:key] = (num_space + char_space + cap_space).shuffle.first(5).join
     params[:game][:key].present?
+  end
+
+  def kick_old_consumer!(options, **)
+    # TODO: Kick old Consumer if still connected
+    # if Consumer.exists?(id: cookies.encrypted[:_pong_id])
+    #   Consumer::Destroy.(id: cookies.encrypted[:_pong_id])
+    # end
+    true
   end
 end
