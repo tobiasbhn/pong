@@ -1,2 +1,13 @@
 h1.h3 JOIN GAME
 = link_to "Back", index_path, class: 'btn btn-primary'
+= form_for :user, url: create_user_path, method: 'post' do |f|
+  = f.text_field :name, maxlength: '10'
+  = label_tag :name, "Name"
+  br
+  = f.number_field :game_id
+  = label_tag :game_id, "Game ID"
+  br
+  = f.text_field :game_key
+  = label_tag :game_key, "Game Key"
+  br
+  = submit_tag "Submit", class: 'btn btn-primary'

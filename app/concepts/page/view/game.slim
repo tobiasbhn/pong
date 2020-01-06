@@ -1,13 +1,13 @@
 h1.h3 NEW GAME
 = link_to "Back", index_path, class: 'btn btn-primary'
 = form_for :game, url: create_game_path, method: 'post' do |f|
-  = f.radio_button :mode, "party", checked: 'checked'
+  = f.radio_button :mode, "party", checked: 'checked', required: 'required'
   = label_tag :mode_party, "Party"
   br
-  = f.radio_button :mode, "multiplayer"
+  = f.radio_button :mode, "multiplayer", required: 'required'
   = label_tag :mode_multiplayer, "Multiplayer"
   br
-  = f.radio_button :mode, "splitscreen"
+  = f.radio_button :mode, "splitscreen", required: 'required'
   = label_tag :mode_splitscreen, "Splitscreen"
   br
   = f.check_box :fullscreen
