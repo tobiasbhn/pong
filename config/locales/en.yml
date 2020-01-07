@@ -31,3 +31,9 @@
 
 en:
   hello: "Hello world"
+  flash:
+    notice:
+      invite: "Your invitet to play pong online against your friend."
+    alert:
+      default: "An Error occured."
+      auth: "Unauthenticated. Please connet to this game before playing."

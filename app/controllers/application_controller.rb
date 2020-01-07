@@ -24,15 +24,12 @@ class ApplicationController < ActionController::Base
     if Consumer.exists?(id: id)
       consumer = Consumer.find(id)
 
-      # check if connection to right game
-      game_id = consumer.consumable_type == "Game" ? consumer.consumable.id : consumer.consumable.game_id
-      if !(game_id == params[:game_id].to_i)
-        flash[:alert] = "Wrong Game."
-        return false
-      end
-      true
+      # check if connection to right game (is game_id in cookie == requested game_id)
+      cookie_game_id = consumer.consumable_type == "Game" ? consumer.consumable.id : consumer.consumable.game_id
+      request_game_id = params[:game_id].to_i
+      
+      cookie_game_id == request_game_id
     else
-      flash[:alert] = "No Cookie."
       false
     end
   end
@@ -41,7 +38,8 @@ class ApplicationController < ActionController::Base
     if authenticated?
       true
     else
-      redirect_to index_path
+      flash[:notice] = t('flash.notice.invite')
+      redirect_to new_user_path(game_id: params[:game_id])
     end
   end
 end

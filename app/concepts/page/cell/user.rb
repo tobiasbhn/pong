@@ -1,4 +1,4 @@
 module Page::Cell
-  class User < Trailblazer::Cell
+  class User < Pong::Cell::Base
   end
 end
