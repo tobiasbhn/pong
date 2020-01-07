@@ -18,6 +18,11 @@ This Repository will be used building an dynamic Webapplication running on Ruby 
 
 ## Request Examples for /:game_id
 
-| URL | Cookie Set | Cookie Consumer Exists | Cookie Consumer Type | Cookie Consumer Game | Result |
-| :-: | :-: | :-: | :-: | :-: | :-: |
-| /12345 | false | / | / | / | invite |
+| URL      | Cookie Set | Cookie Consumer Exists | Cookie Consumer Type | Cookie Consumer Game | Game Exists | Game Mode | Result           |
+| :------: | :--------: | :--------------------: | :------------------: | :------------------: | :---------: | :-------: | :--------------: |
+| `/12345` | true       | true                   | "Game"               | `12345`              | true        | /         | `#host_game`     |
+| `/12345` | true       | true                   | "User"               | `12345`              | true        | /         | `#play_game`     |
+| `/12345` | false      | /                      | /                    | /                    | true/false  | /         | `#invite`        |
+| `/12345` | true       | false                  | /                    | /                    | true/false  | /         | `#invite`        |
+| `/12345` | true       | true                   | "Game"               | `54321`              | true/false  | /         | `#invite`        |
+| ... | ...       | ...                   | ...               | ...              | ...  | ...         | ...       |
