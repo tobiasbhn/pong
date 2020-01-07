@@ -26,3 +26,37 @@ This Repository will be used building an dynamic Webapplication running on Ruby 
 | `/12345` | true       | false                  | /                    | /                    | true/false  | /         | `#invite`        |
 | `/12345` | true       | true                   | "Game"               | `54321`              | true/false  | /         | `#invite`        |
 | ... | ...       | ...                   | ...               | ...              | ...  | ...         | ...       |
+
+
+
+Auth?
+Im richtigen Game?
+
+
+Show:
+| Requested Game | Already Auth? | Auth in Game | Result |
+| :-: | :-: | :-: | :-: |
+| `11111` | true | `11111` | successful |
+| `11111` | true | `22222` | failure |
+| `11111` | false | / | failure |
+
+Create Game:
+| Cookie present? | Action |
+| :-: | :-: |
+| true | 
+| false | Create Game Normally & Set Cookie |
+
+
+Game Destroy: All Players are Destroyed, Game Tupel gets destroyed, redirected to Index if online, can not access this specific game again
+Game Deactivate: 
+Player Destroy: Player Tupel gets destroyed, redirected to Index if online
+
+
+
+## Mode Overview:
+* Party: 1 Gameview without Controls (Host) + n Controls(User)
+  * form: only modeswitch - pupblic gamekey generated
+* Multiplayer: 2 Gameviews + Controls (1 Host + 1 User) + n Mirror without Controls
+  * form: modeswitch + private Checkbox, which can be used to lock game with private password
+* Splitscreen: 1 Gameview + 2 Controls + n Mirror without Controls
+  * form: 
