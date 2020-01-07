@@ -20,5 +20,17 @@ module Game::Contract
           allow_blank: false
         }
       }
+    property :protect
+    property :password
+
+    validate do
+      if mode == 'party' && protect.to_i == 1
+        errors.add(:protect, "Darf nicht protected sein.")
+      end
+
+      if mode != 'party' && password.blank? && protect.to_i == 1
+        errors.add(:password, "Darf nicht leer sein.")
+      end
+    end
   end
 end
