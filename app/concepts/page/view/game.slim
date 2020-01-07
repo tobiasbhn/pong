@@ -2,6 +2,7 @@ p = flash[:alert]
 p = flash[:notice]
 h1.h3 NEW GAME
 = link_to "Back", index_path, class: 'btn btn-primary'
+
 = form_for :game, url: create_game_path, method: 'post' do |f|
   = f.radio_button :mode, "party", checked: 'checked', required: 'required'
   = label_tag :mode_party, "Party"
@@ -14,5 +15,11 @@ h1.h3 NEW GAME
   br
   = f.check_box :fullscreen
   = label_tag :fullscreen, "Open Fullscreen"
+  br
+  = f.check_box :protect
+  = label_tag :protect, "Protect Game with Password?"
+  br
+  = f.password_field :password
+  = label_tag :password, "Choose Password"
   br
   = submit_tag "Submit", class: 'btn btn-primary'

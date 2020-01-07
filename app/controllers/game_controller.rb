@@ -7,6 +7,8 @@ class GameController < ActionController::Base
       redirect_to game_path(game_id: result[:model].id)
     else
       flash[:alert] = "Game creation error"
+      # result['contract.default'].errors.messages
+      # byebug
       redirect_to new_game_path
     end
   end

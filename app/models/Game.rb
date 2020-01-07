@@ -2,6 +2,8 @@ class Game < ApplicationRecord
   has_one :consumer, as: :consumable, dependent: :destroy
   has_many :users, dependent: :destroy
   after_create :create_consumer
+  has_secure_password :password, validations: false
+
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where.not(active: true) }

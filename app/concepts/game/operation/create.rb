@@ -3,6 +3,7 @@ class Game::Create < Trailblazer::Operation
   step Contract::Build(constant: Game::Contract::Create)
   step :define_id!
   step :define_key!
+  step :define_protected!
   step Contract::Validate(key: :game)
   step Contract::Persist()
   pass :kick_old_consumer!
@@ -22,6 +23,14 @@ class Game::Create < Trailblazer::Operation
     cap_space = ('A'..'H').to_a + ('J'..'K').to_a + ('M'..'Z').to_a
     params[:game][:key] = (num_space + char_space + cap_space).shuffle.first(5).join
     params[:game][:key].present?
+  end
+
+  def define_protected!(options, params:, **)
+    if params[:game][:mode] == 'party'
+      params[:game][:protect] = '0'
+      params[:game][:password] = nil
+    end
+    true
   end
 
   def kick_old_consumer!(options, **)
