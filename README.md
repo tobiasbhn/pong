@@ -15,3 +15,9 @@ This Repository will be used building an dynamic Webapplication running on Ruby 
 * Reload / Revisit
   * If I reload the Page as a Host, I want to continue the same Game, but restart the Round
   * If I reload the Page as a Player, I want to stay in the same Game, but will be at the End of the Queue
+
+## Request Examples for /:game_id
+
+| URL | Cookie Set | Cookie Consumer Exists | Cookie Consumer Type | Cookie Consumer Game | Result |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| /12345 | false | / | / | / | invite |

@@ -1,3 +1,5 @@
+p = flash[:alert]
+p = flash[:notice]
 h1.h3 NEW GAME
 = link_to "Back", index_path, class: 'btn btn-primary'
 = form_for :game, url: create_game_path, method: 'post' do |f|

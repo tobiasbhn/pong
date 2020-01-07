@@ -6,8 +6,8 @@ class GameController < ActionController::Base
       cookies.encrypted[:_pong_id] = result[:model].consumer.id
       redirect_to game_path(game_id: result[:model].id)
     else
-      flash[:alert] = "Game creation error " + result["contract.default"].errors.messages.to_s
-      redirect_to index_path
+      flash[:alert] = "Game creation error"
+      redirect_to new_game_path
     end
   end
 end

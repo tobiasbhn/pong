@@ -1,4 +1,4 @@
 module Page::Cell
-  class Game < Trailblazer::Cell
+  class Game < Pong::Cell::Base
   end
 end
