@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_06_141041) do
+ActiveRecord::Schema.define(version: 2020_01_07_091258) do
 
   create_table "consumers", force: :cascade do |t|
     t.string "consumable_type"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2020_01_06_141041) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "active", default: false
+    t.integer "client_count", default: 0
     t.index ["consumable_type", "consumable_id"], name: "index_consumers_on_consumable_type_and_consumable_id"
   end
 

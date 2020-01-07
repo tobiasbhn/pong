@@ -14,11 +14,22 @@ class ApplicationController < ActionController::Base
   end
 
   def show
-    # TODO
+    consumer = Consumer.find(cookies.encrypted[:_pong_id])
+
   end
 
 
   private
+
+  def authenticate!
+    if authenticated?
+      true
+    else
+      flash[:notice] = t('flash.notice.invite')
+      redirect_to new_user_path(game_id: params[:game_id])
+    end
+  end
+
   def authenticated?
     id = cookies.encrypted[:_pong_id]
     if Consumer.exists?(id: id)
@@ -31,15 +42,6 @@ class ApplicationController < ActionController::Base
       cookie_game_id == request_game_id
     else
       false
-    end
-  end
-
-  def authenticate!
-    if authenticated?
-      true
-    else
-      flash[:notice] = t('flash.notice.invite')
-      redirect_to new_user_path(game_id: params[:game_id])
     end
   end
 end
