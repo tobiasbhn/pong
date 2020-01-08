@@ -1,5 +1,5 @@
 module Head::Cell
-  class Index < Trailblazer::Cell
+  class Index < Pong::Cell::Base
 
   end
 end

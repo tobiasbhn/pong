@@ -1,5 +1,6 @@
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
+    include Pong::Helpers
     identified_by :current_consumer
 
     def connect
@@ -17,7 +18,7 @@ module ApplicationCable
     end
 
     def update_consumer
-      self.current_consumer = Consumer.find_by(id: cookies.encrypted[:_pong_id])
+      self.current_consumer = Consumer.find_by(id: consumer_cookie)
     end
   end
 end
