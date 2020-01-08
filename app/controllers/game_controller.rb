@@ -1,9 +1,12 @@
 class GameController < ActionController::Base
+  include Pong::Helpers
+
   def create
     result = Game::Create.(params: params)
     
     if result.success?
-      cookies.encrypted[:_pong_id] = result[:model].consumer.id
+      consumer_cookie(result[:model].consumer.id)
+      protect_cookie(result[:model].id) if result[:model].protect
       redirect_to game_path(game_id: result[:model].id)
     else
       flash[:alert] = "Game creation error"

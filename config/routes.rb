@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
   # For all normal Frontend-Pages
   root 'application#index', as: 'index'
-  get '/host', to: 'application#game', as: 'new_game'
-  get '/(:game_id)/join', to: 'application#user', as: 'new_user'
+  get '/host', to: 'application#host', as: 'new_game'
+  get '/(:game_id)/join', to: 'application#join', as: 'new_user'
 
   # Backend Stuff
   post '/game/create', to: 'game#create', as: 'create_game'
   post '/user/create', to: 'user#create', as: 'create_user'
+  post '/user/auth', to: 'user#auth', as: 'user_auth'
 
 
   # 'Secured'

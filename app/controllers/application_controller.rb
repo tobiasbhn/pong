@@ -1,26 +1,25 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate!, only: :show
+  include Pong::Helpers
+  before_action :authenticate!, :check_password!, only: :show
 
   def index
     # TODO
   end
 
-  def game
+  def host
     # TODO
   end
 
-  def user
+  def join
     # TODO
   end
 
   def show
-    consumer = Consumer.find(cookies.encrypted[:_pong_id])
-
+    consumer = Consumer.find(consumer_cookie)
   end
 
 
   private
-
   def authenticate!
     if authenticated?
       true
@@ -31,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticated?
-    id = cookies.encrypted[:_pong_id]
+    id = consumer_cookie
     if Consumer.exists?(id: id)
       consumer = Consumer.find(id)
 
@@ -42,6 +41,15 @@ class ApplicationController < ActionController::Base
       cookie_game_id == request_game_id
     else
       false
+    end
+  end
+
+  def check_password!
+    game = Game.find(params[:game_id])
+    if game.protect && protect_cookie != game.id
+      render(html: cell(Page::Cell::Password, nil, id: game.id).(), layout: 'application', status: :ok)
+    else
+      true
     end
   end
 end

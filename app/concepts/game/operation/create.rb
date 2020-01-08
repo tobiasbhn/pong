@@ -35,9 +35,6 @@ class Game::Create < Trailblazer::Operation
 
   def kick_old_consumer!(options, **)
     # TODO: Kick old Consumer if still connected
-    # if Consumer.exists?(id: cookies.encrypted[:_pong_id])
-    #   Consumer::Destroy.(id: cookies.encrypted[:_pong_id])
-    # end
     true
   end
 end

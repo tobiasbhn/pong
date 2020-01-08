@@ -61,4 +61,5 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.hosts << "alteisenrand"
+  config.hosts << "alteisenrand.hob"
 end
