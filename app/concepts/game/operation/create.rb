@@ -3,7 +3,7 @@ class Game::Create < Trailblazer::Operation
   step Contract::Build(constant: Game::Contract::Create)
   step :define_id!
   step :define_key!
-  step :define_protected!
+  # step :define_protected!
   step Contract::Validate(key: :game)
   step Contract::Persist()
   pass :kick_old_consumer!

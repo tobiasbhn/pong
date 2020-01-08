@@ -12,6 +12,10 @@ export default class extends Controller {
       },
       disconnected() {
         console.log("Disconnected");
+        document.location.href = "/";
+      },
+      received(data) {
+        console.log(data)
       }
     });
   }
