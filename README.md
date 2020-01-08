@@ -32,19 +32,13 @@ This Repository will be used building an dynamic Webapplication running on Ruby 
 Auth?
 Im richtigen Game?
 
-
 Show:
 | Requested Game | Already Auth? | Auth in Game | Result |
-| :-: | :-: | :-: | :-: |
+| :--: | :--: | :--: | :--: |
 | `11111` | true | `11111` | successful |
 | `11111` | true | `22222` | failure |
 | `11111` | false | / | failure |
 
-Create Game:
-| Cookie present? | Action |
-| :-: | :-: |
-| true | 
-| false | Create Game Normally & Set Cookie |
 
 
 Game Destroy: All Players are Destroyed, Game Tupel gets destroyed, redirected to Index if online, can not access this specific game again

@@ -5,16 +5,18 @@ module ApplicationCable
 
     def connect
       update_consumer
-      current_consumer.active = true
-      current_consumer.client_count += 1;
-      current_consumer.save
+      current_consumer&.active = true
+      current_consumer&.client_count += 1;
+      current_consumer&.save
     end
 
     def disconnect
       update_consumer
-      current_consumer.client_count = current_consumer.client_count - 1;
-      current_consumer.active = false if current_consumer.client_count <= 0
-      current_consumer.save
+      current_consumer&.client_count = current_consumer&.client_count - 1;
+      current_consumer&.active = false if current_consumer&.client_count <= 0
+      current_consumer&.save
+
+      ConsumerDisconnectJob.set(wait: 10.seconds).perform_later(id: current_consumer&.id)
     end
 
     def update_consumer
