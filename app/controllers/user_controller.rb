@@ -18,15 +18,19 @@ class UserController < ActionController::Base
 
   def auth
     puts "Using Controller Action: User#Auth".green
-    game = Game.find(params[:password][:id])
+    game = Game.find_by(id: params[:password][:id])
     if game&.authenticate(params[:password][:password])
       puts "Game is Password-Protected: User successfully provided password".green
       protect_cookie(game)
       redirect_to game_path(game_id: game.id)
-    else
+    elsif game.present?
       puts "Game is Password-Protected: Provided Password wrong".red
       flash[:alert] = "Wrong Password."
       render(html: cell(Page::Cell::Password, nil, id: game.id).(), layout: 'application', status: :ok)
+    else
+      puts "Game does not exist".red
+      flash[:alert] = "Game not found."
+      redirect_to index_path
     end
   end
 end
