@@ -1,7 +1,7 @@
 module Page::Cell
   class Show < Pong::Cell::Base
     def consumer
-      Consumer.find(consumer_cookie)
+      Consumer.find(consumer_cookie&.[](:value))
     end
 
     def game
