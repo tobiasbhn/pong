@@ -15,5 +15,16 @@ module Pong
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # config.after_initialize do
+    #   # Clear some Models after Init
+    #   Consumer.destroy_all
+    #   Game.destroy_all
+    #   User.destroy_all
+
+    #   # Save Server Start Time to validate Cookies and Calc Uptime
+    #   Pong::BOOTED_AT = Time.now
+    #   puts "Server started at: " + Pong::BOOTED_AT.to_s
+    # end
   end
 end

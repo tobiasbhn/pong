@@ -3,12 +3,12 @@ class Game::Create < Trailblazer::Operation
   step Contract::Build(constant: Game::Contract::Create)
   step :define_id!
   step :define_key!
-  # step :define_protected!
   step Contract::Validate(key: :game)
+  step :kick_old_consumer!
   step Contract::Persist()
-  pass :kick_old_consumer!
 
   def define_id!(options, params:, **)
+    puts "Game::Create::Operation: define_id".tb
     params[:game][:id]
     while params[:game][:id].nil?
       id = rand(10000..99999)
@@ -18,6 +18,7 @@ class Game::Create < Trailblazer::Operation
   end
 
   def define_key!(options, params:, **)
+    puts "Game::Create::Operation: define_key".tb
     num_space = ('2'..'9').to_a
     char_space = ('a'..'h').to_a + ('j'..'k').to_a + ('m'..'z').to_a
     cap_space = ('A'..'H').to_a + ('J'..'K').to_a + ('M'..'Z').to_a
@@ -25,16 +26,9 @@ class Game::Create < Trailblazer::Operation
     params[:game][:key].present?
   end
 
-  def define_protected!(options, params:, **)
-    if params[:game][:mode] == 'party'
-      params[:game][:protect] = '0'
-      params[:game][:password] = nil
-    end
-    true
-  end
-
-  def kick_old_consumer!(options, **)
-    # TODO: Kick old Consumer if still connected
-    true
+  def kick_old_consumer!(options, cookie:, **)
+    puts "Game::Create::Operation: kick_old_consumer".tb
+    result = Consumer::KickPrevious.(cookie: cookie)
+    result.success?
   end
 end

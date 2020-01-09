@@ -8,19 +8,26 @@ module ApplicationCable
       current_consumer&.active = true
       current_consumer&.client_count += 1;
       current_consumer&.save
+      puts "A User Connected. ID: #{current_consumer&.id} | Active Instances: #{current_consumer&.client_count}".socket
     end
 
     def disconnect
-      update_consumer
-      current_consumer&.client_count = current_consumer&.client_count - 1;
-      current_consumer&.active = false if current_consumer&.client_count <= 0
-      current_consumer&.save
+      if Consumer.exists?(id: consumer_cookie&.[](:value))
+        update_consumer
+        current_consumer&.client_count = current_consumer&.client_count - 1;
+        current_consumer&.active = false if current_consumer&.client_count <= 0
+        current_consumer&.save
+        puts "A User Disconnected. ID: #{current_consumer&.id} | Active Instances: #{current_consumer&.client_count}".socket
 
-      ConsumerDisconnectJob.set(wait: 10.seconds).perform_later(id: current_consumer&.id)
+        ConsumerDisconnectJob.set(wait: 10.seconds).perform_later(cookie: consumer_cookie)
+        puts "A User Disconnected. Started ActiveJob: ConsumerDisconnectJob".socket
+      else
+        puts "A User Disconnected. Hes probably already destroyed".socket
+      end
     end
 
     def update_consumer
-      self.current_consumer = Consumer.find_by(id: consumer_cookie)
+      self.current_consumer = Consumer.find_by(id: consumer_cookie&.[](:value))
     end
   end
 end
