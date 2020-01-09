@@ -15,7 +15,7 @@ require("channels")
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
-import 'bootstrap'
+// import 'bootstrap'
 import 'controllers'
 import './../src/css/pong.scss'
 import './../src/js/pong.js'
