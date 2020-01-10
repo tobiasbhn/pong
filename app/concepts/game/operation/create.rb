@@ -6,6 +6,7 @@ class Game::Create < Trailblazer::Operation
   step Contract::Validate(key: :game)
   step :kick_old_consumer!
   step Contract::Persist()
+  fail :alert_message!
 
   def define_id!(options, params:, **)
     puts "Game::Create::Operation: define_id".tb
@@ -30,5 +31,10 @@ class Game::Create < Trailblazer::Operation
     puts "Game::Create::Operation: kick_old_consumer".tb
     result = Consumer::KickPrevious.(cookie: cookie)
     result.success?
+  end
+
+  def alert_message!(options, **)
+    puts "Game::Create::Operation: alert_message".tb
+    options[:flash_alert] = "Game Create Error"
   end
 end

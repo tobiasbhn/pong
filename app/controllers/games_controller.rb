@@ -1,6 +1,4 @@
-class GameController < ActionController::Base
-  include Pong::Helpers
-
+class GamesController < ApplicationController
   def create
     puts "Using Controller Action: Game#Create".green
     result = Game::Create.(params: params, cookie: consumer_cookie)
@@ -13,9 +11,11 @@ class GameController < ActionController::Base
     else
       puts "Game#Create Operation failure".red
       flash[:alert] = "Game creation error"
-      # result['contract.default'].errors.messages
-      # byebug
-      redirect_to new_game_path # TODO: irgendwie contract.default mit geben
+      render_cell(
+        page_cell: Page::Cell::Host,
+        header_cell: Head::Cell::Host,
+        cell_object: result['contract.default']
+      )
     end
   end
 end

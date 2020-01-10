@@ -1,6 +1,4 @@
-class UserController < ActionController::Base
-  include Pong::Helpers
-
+class UsersController < ApplicationController
   def create
     puts "Using Controller Action: User#Create".green
     result = User::Create.(params: params, cookie: consumer_cookie)
@@ -12,13 +10,17 @@ class UserController < ActionController::Base
     else
       puts "User#Create Operation failure".red
       flash[:alert] = "User creation error"
-      redirect_to new_user_path # TODO: irgendwie contract.default mit geben
+      render_cell(
+        page_cell: Page::Cell::Join,
+        header_cell: Head::Cell::Join,
+        cell_object: result['contract.default']
+      )
     end
   end
 
   def auth
     puts "Using Controller Action: User#Auth".green
-    game = Game.find_by(id: params[:password][:id])
+    game = Game.find_by(id: params[:game_id])
     if game&.authenticate(params[:password][:password])
       puts "Game is Password-Protected: User successfully provided password".green
       protect_cookie(game)
@@ -26,7 +28,7 @@ class UserController < ActionController::Base
     elsif game.present?
       puts "Game is Password-Protected: Provided Password wrong".red
       flash[:alert] = "Wrong Password."
-      render(html: cell(Page::Cell::Password, nil, id: game.id).(), layout: 'application', status: :ok)
+      render_cell(page_cell: Page::Cell::Password)
     else
       puts "Game does not exist".red
       flash[:alert] = "Game not found."

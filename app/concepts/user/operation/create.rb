@@ -1,9 +1,8 @@
 class User::Create < Trailblazer::Operation
-  step :check_game!
-  step :check_key!
-  fail :wrong_input!, fail_fast: true
   step Model(User, :new)
   step Contract::Build(constant: User::Contract::Create)
+  step :check_game!
+  step :check_key!
   step Contract::Validate(key: :user)
   step :kick_old_consumer!
   step Contract::Persist()
@@ -14,18 +13,21 @@ class User::Create < Trailblazer::Operation
     if Game.exists?(id: params[:user][:game_id])
       options[:game] = Game.find(params[:user][:game_id])
     else
-      false
+      options['contract.default'].errors.add(:game_id, 'Game Id oder Key falsch')
+      options['contract.default'].errors.add(:game_key, 'Game Id oder Key falsch')
+      Railway.fail!
     end
   end
 
   def check_key!(options, game:, params:, **)
     puts "User::Create::Operation: check_key".tb
-    game.key == params[:user][:game_key]
-  end
-
-  def wrong_input!(options, **)
-    puts "User::Create::Operation: wrong_input".tb
-    options[:flash_alert] = "Wrong Game Id or wrong Key."
+    if game.key == params[:user][:game_key]
+      Railway.pass!
+    else
+      options['contract.default'].errors.add(:game_id, 'Game Id oder Key falsch')
+      options['contract.default'].errors.add(:game_key, 'Game Id oder Key falsch')
+      Railway.fail!
+    end
   end
 
   def kick_old_consumer!(options, cookie:, **)

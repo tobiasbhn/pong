@@ -19,7 +19,7 @@ module ApplicationCable
         current_consumer&.save
         puts "A User Disconnected. ID: #{current_consumer&.id} | Active Instances: #{current_consumer&.client_count}".socket
 
-        ConsumerDisconnectJob.set(wait: 10.seconds).perform_later(cookie: consumer_cookie)
+        ConsumerDisconnectJob.set(wait: 7.seconds).perform_later(cookie: consumer_cookie)
         puts "A User Disconnected. Started ActiveJob: ConsumerDisconnectJob".socket
       else
         puts "A User Disconnected. Hes probably already destroyed".socket
