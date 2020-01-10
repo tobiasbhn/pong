@@ -1,4 +1,5 @@
 require "reform"
+require "reform/form/validation/unique_validator"
 
 module Game::Contract
   class Create < Reform::Form
@@ -17,6 +18,7 @@ module Game::Contract
           message: "Muss im Format '12345' sein."
         }
       }
+
     property :key,
       validates: {
         presence: true,
@@ -28,6 +30,7 @@ module Game::Contract
           message: "Muss 5 Zeichen lang sein"
         }
       }
+
     property :mode,
       validates: {
         presence: true,
@@ -36,7 +39,9 @@ module Game::Contract
           allow_blank: false
         }
       }
+
     property :protect
+    
     property :password
 
     validate do

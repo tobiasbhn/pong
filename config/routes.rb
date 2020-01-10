@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  
   root 'pages#index', as: 'index'
   get '/host', to: 'games#new', as: 'new_game'
   post '/host', to: 'games#create', as: 'create_game'
