@@ -55,7 +55,10 @@ class ApplicationController < ActionController::Base
         true
       else
         puts "Game is Password-Protected: User need to authenticate before".red
-        render_cell(page_cell: Page::Cell::Password)
+        render_cell(
+          page_cell: User::Cell::Auth,
+          header_cell: User::Header::Cell::Auth
+        )
       end
     else
       puts "Game not found".red
@@ -63,8 +66,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def render_cell(page_cell:, header_cell: Head::Cell::Default, cell_object: nil, layout: 'application', status: :ok, **options)
-    @html_head = cell(header_cell).()
+  def render_cell(page_cell:, header_cell:, cell_object: nil, layout: 'application', status: :ok, **options)
+    @html_head = header_cell
     render(html: cell(page_cell, cell_object, options).(), layout: layout, status: status)
   end
 end

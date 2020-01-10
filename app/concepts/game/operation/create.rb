@@ -1,7 +1,7 @@
-class Game::Create < Trailblazer::Operation
+class Game::Operation::Create < Trailblazer::Operation
   # step Model(Game, :new)
   # step Contract::Build(constant: Game::Contract::Create)
-  step Game::Present
+  step Subprocess(Game::Operation::Present)
   step :define_id!
   step :define_key!
   step Contract::Validate(key: :game)
