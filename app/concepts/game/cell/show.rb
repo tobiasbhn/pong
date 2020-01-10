@@ -1,4 +1,4 @@
-module Page::Cell
+module Game::Cell
   class Show < Pong::Cell::Base
     def consumer
       Consumer.find_by(id: consumer_cookie&.[](:value))

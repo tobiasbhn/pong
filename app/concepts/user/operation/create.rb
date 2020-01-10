@@ -1,6 +1,7 @@
 class User::Create < Trailblazer::Operation
-  step Model(User, :new)
-  step Contract::Build(constant: User::Contract::Create)
+  # step Model(User, :new)
+  # step Contract::Build(constant: User::Contract::Create)
+  step User::Present
   step :check_game!
   step :check_key!
   step Contract::Validate(key: :user)

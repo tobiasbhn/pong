@@ -1,6 +1,7 @@
 class Game::Create < Trailblazer::Operation
-  step Model(Game, :new)
-  step Contract::Build(constant: Game::Contract::Create)
+  # step Model(Game, :new)
+  # step Contract::Build(constant: Game::Contract::Create)
+  step Game::Present
   step :define_id!
   step :define_key!
   step Contract::Validate(key: :game)
