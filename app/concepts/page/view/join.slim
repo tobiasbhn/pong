@@ -2,14 +2,17 @@ p = flash[:alert]
 p = flash[:notice]
 h1.h3 JOIN GAME
 = link_to "Back", index_path, class: 'btn btn-primary'
-= form_for :user, url: create_user_path, method: 'post' do |f|
+= form_for model, url: create_user_path, method: 'post' do |f|
   = f.text_field :name, maxlength: '10'
   = label_tag :name, "Name"
+  p = model.errors.messages[:name].first if model.respond_to?(:errors) && model.errors.key?(:name)
   br
   = f.number_field :game_id
   = label_tag :game_id, "Game ID"
+  p = model.errors.messages[:game_id].first if model.respond_to?(:errors) && model.errors.key?(:game_id)
   br
   = f.text_field :game_key
   = label_tag :game_key, "Game Key"
+  p = model.errors.messages[:game_key].first if model.respond_to?(:errors) && model.errors.key?(:game_key)
   br
   = submit_tag "Submit", class: 'btn btn-primary'

@@ -1,27 +1,5 @@
 class ApplicationController < ActionController::Base
   include Pong::Helpers
-  before_action :authenticate!, :check_password!, only: :show
-
-  def index
-    # TODO
-    puts "Using Controller Action: Application#Index".green
-  end
-
-  def host
-    # TODO
-    puts "Using Controller Action: Application#Host".green
-  end
-
-  def join
-    # TODO
-    puts "Using Controller Action: Application#Join".green
-  end
-
-  def show
-    # TODO
-    puts "Using Controller Action: Application#Show".green
-  end
-
 
   private
   def authenticate!
@@ -77,11 +55,16 @@ class ApplicationController < ActionController::Base
         true
       else
         puts "Game is Password-Protected: User need to authenticate before".red
-        render(html: cell(Page::Cell::Password, nil, id: game.id).(), layout: 'application', status: :ok)
+        render_cell(page_cell: Page::Cell::Password)
       end
     else
       puts "Game not found".red
       false
     end
+  end
+
+  def render_cell(page_cell:, header_cell: Head::Cell::Default, cell_object: nil, layout: 'application', status: :ok, **options)
+    @html_head = cell(header_cell).()
+    render(html: cell(page_cell, cell_object, options).(), layout: layout, status: status)
   end
 end

@@ -3,23 +3,28 @@ p = flash[:notice]
 h1.h3 NEW GAME
 = link_to "Back", index_path, class: 'btn btn-primary'
 
-= form_for :game, url: create_game_path, method: 'post' do |f|
+= form_for model, url: create_game_path, method: 'post' do |f|
   = f.radio_button :mode, "party", checked: 'checked', required: 'required'
   = label_tag :mode_party, "Party"
+  p = model.errors.messages[:mode].first if model.respond_to?(:errors) && model.errors.key?(:mode)
   br
   = f.radio_button :mode, "multiplayer", required: 'required'
   = label_tag :mode_multiplayer, "Multiplayer"
+  p = model.errors.messages[:mode].first if model.respond_to?(:errors) && model.errors.key?(:mode)
   br
   = f.radio_button :mode, "splitscreen", required: 'required'
   = label_tag :mode_splitscreen, "Splitscreen"
-  br
-  = f.check_box :fullscreen
-  = label_tag :fullscreen, "Open Fullscreen"
+  p = model.errors.messages[:mode].first if model.respond_to?(:errors) && model.errors.key?(:mode)
   br
   = f.check_box :protect
   = label_tag :protect, "Protect Game with Password?"
+  p = model.errors.messages[:protect].first if model.respond_to?(:errors) && model.errors.key?(:protect)
   br
   = f.password_field :password
   = label_tag :password, "Choose Password"
+  p = model.errors.messages[:password].first if model.respond_to?(:errors) && model.errors.key?(:password)
+  br
+  = check_box_tag :fullscreen
+  = label_tag :fullscreen, "Open Fullscreen"
   br
   = submit_tag "Submit", class: 'btn btn-primary'

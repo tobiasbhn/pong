@@ -5,12 +5,28 @@ module Game::Contract
     property :id,
       validates: {
         presence: true,
-        unique: true
+        unique: true,
+        length: {
+          minimum: 5,
+          maximum: 5,
+          allow_blank: false,
+          message: "Muss im Format '12345' sein."
+        },
+        format: {
+          with: /\A[0-9]+\z/,
+          message: "Muss im Format '12345' sein."
+        }
       }
     property :key,
       validates: {
         presence: true,
-        unique: true
+        unique: true,
+        length: {
+          minimum: 5,
+          maximum: 5,
+          allow_blank: false,
+          message: "Muss 5 Zeichen lang sein"
+        }
       }
     property :mode,
       validates: {
@@ -25,7 +41,7 @@ module Game::Contract
 
     validate do
       if mode == 'party' && protect.to_i == 1
-        errors.add(:protect, "Darf nicht protected sein.")
+        errors.add(:protect, "Party-Mode darf nicht protected sein.")
       end
 
       if mode != 'party' && password.blank? && protect.to_i == 1
