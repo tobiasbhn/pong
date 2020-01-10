@@ -1,4 +1,4 @@
-require "reform/form/validation/unique_validator"
+require "reform"
 
 module User::Contract
   class Create < Reform::Form

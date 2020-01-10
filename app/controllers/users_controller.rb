@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+  def new
+
+  end
+  
   def create
     puts "Using Controller Action: User#Create".green
     result = User::Create.(params: params, cookie: consumer_cookie)

@@ -1,4 +1,8 @@
 class GamesController < ApplicationController
+  def new
+
+  end
+
   def create
     puts "Using Controller Action: Game#Create".green
     result = Game::Create.(params: params, cookie: consumer_cookie)
@@ -17,5 +21,9 @@ class GamesController < ApplicationController
         cell_object: result['contract.default']
       )
     end
+  end
+
+  def show
+
   end
 end

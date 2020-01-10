@@ -1,4 +1,4 @@
-require "reform/form/validation/unique_validator"
+require "reform"
 
 module Game::Contract
   class Create < Reform::Form
