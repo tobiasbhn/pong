@@ -5,17 +5,17 @@ export default class extends Controller {
   initialize() {
     this.cable = consumer.subscriptions.create( "GameChannel", {
       connected() {
-        console.log("Connected");
+        console.log("GameChannel Connected");
       },
       rejected() {
-        console.log("Rejected");
+        console.log("GameChannel Rejected");
       },
       disconnected() {
-        console.log("Disconnected");
+        console.log("GameChannel Disconnected");
         document.location.href = "/";
       },
       received(data) {
-        console.log(data)
+        console.log("GameChannel " + data)
       }
     });
   }
