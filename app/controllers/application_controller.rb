@@ -1,5 +1,10 @@
 class ApplicationController < ActionController::Base
   include Pong::Helpers
+  before_action :set_locale!
+
+  def default_url_options
+    { lang: I18n.locale }
+  end
 
   private
   def authenticate!
@@ -69,5 +74,23 @@ class ApplicationController < ActionController::Base
   def render_cell(page_cell:, header_cell:, cell_object: nil, layout: 'application', status: :ok, **options)
     @html_head = header_cell
     render(html: cell(page_cell, cell_object, options).(), layout: layout, status: status)
+  end
+
+  def set_locale!
+    lang = params[:lang]
+    if lang.blank?
+      puts "Applicationcontroller: before_action set_language: No language selected: Going to Auto-Select language and redirect".red
+      redirect_to controller: params[:controller], action: params[:action], lang: auto_locale
+    else
+      puts "Applicationcontroller: before_action set_language: Selected Language: #{lang}".green
+      I18n.locale = lang
+    end
+  end
+
+  def auto_locale
+    locales = request.env['HTTP_ACCEPT_LANGUAGE'] || I18n.default_locale
+    locales.scan(/[a-z]{2}(?=;)/).find do |locale|
+      I18n.available_locales.include?(locale.to_sym)
+    end
   end
 end

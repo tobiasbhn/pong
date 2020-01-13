@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   def new
     puts "Using Controller Action: Users#New".green
+    puts params.to_s.green
     result = User::Operation::Present.(params: params)
 
     if result.success?
@@ -19,6 +20,7 @@ class UsersController < ApplicationController
   
   def create
     puts "Using Controller Action: Users#Create".green
+    puts params.to_s.green
     result = User::Operation::Create.(params: params, cookie: consumer_cookie)
     
     if result.success?
@@ -39,6 +41,7 @@ class UsersController < ApplicationController
 
   def auth
     puts "Using Controller Action: Users#Auth".green
+    puts params.to_s.green
     game = Game.find_by(id: params[:game_id])
     if game&.authenticate(params[:password][:password])
       puts "Game is Password-Protected: User successfully provided password".green
