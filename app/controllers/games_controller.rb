@@ -3,6 +3,7 @@ class GamesController < ApplicationController
 
   def new
     puts "Using Controller Action: Games#New".green
+    puts params.to_s.green
     result = Game::Operation::Present.(params: params)
 
     if result.success?
@@ -21,6 +22,7 @@ class GamesController < ApplicationController
 
   def create
     puts "Using Controller Action: Games#Create".green
+    puts params.to_s.green
     result = Game::Operation::Create.(params: params, cookie: consumer_cookie)
 
     if result.success?
@@ -42,6 +44,7 @@ class GamesController < ApplicationController
   def show
     # TODO: dynamicly select which cell depending on game mode and consumer type
     puts "Using Controller Action: Games#Show".green
+    puts params.to_s.green
     render_cell(
       page_cell: Game::Cell::Show,
       header_cell: Game::Header::Cell::Show
