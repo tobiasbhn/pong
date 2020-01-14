@@ -41,8 +41,17 @@ module Game::Contract
       }
 
     property :protect
-    
     property :password
+    property :fullscreen
+    property :legal,
+      validates: {
+        presence: true,
+        inclusion: {
+          in: ["1"],
+          allow_blank: false,
+          message: "You need to accept this"
+        }
+      }
 
     validate do
       if mode == 'party' && protect.to_i == 1

@@ -44,6 +44,16 @@ module User::Contract
         }
       }
 
+    property :legal,
+      validates: {
+        presence: true,
+        inclusion: {
+          in: ["1"],
+          allow_blank: false,
+          message: "You need to accept this"
+        }
+      }
+
     validate do
       puts game_id
       if !(Game.exists?(id: game_id) && Game.find(game_id).key == game_key)

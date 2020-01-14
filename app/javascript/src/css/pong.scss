@@ -7,5 +7,24 @@
 
 body {
   background-color: black;
-  color: white;
+  overflow-x: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+.pong-container {
+  @extend .container;
+}
+
+.pong-card {
+  @extend .card;
+  @extend .container;
+  max-width: 540px;
+  margin-top: 15px;
+
+  .btn {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
 }

@@ -1,19 +1,40 @@
-p = flash[:alert]
-p = flash[:notice]
-h1.h3 JOIN GAME
-= link_to "Back", index_path, class: 'btn btn-primary'
+.pong-container
+  .pong-card
+    .card-body
+      h1.h3.card-title JOIN GAME
+      = cell(Pong::Cell::Flash)
 
-= form_for model, as: 'user', url: create_user_path, method: 'post' do |f|
-  = f.text_field :name, maxlength: '10'
-  = label_tag :name, "Name"
-  p = model.errors.messages[:name].first if model.respond_to?(:errors) && model.errors.key?(:name)
-  br
-  = f.number_field :game_id, value: insert_game_id
-  = label_tag :game_id, "Game ID"
-  p = model.errors.messages[:game_id].first if model.respond_to?(:errors) && model.errors.key?(:game_id)
-  br
-  = f.text_field :game_key
-  = label_tag :game_key, "Game Key"
-  p = model.errors.messages[:game_key].first if model.respond_to?(:errors) && model.errors.key?(:game_key)
-  br
-  = f.submit "Submit", class: 'btn btn-primary'
+      = form_for model, as: 'user', url: create_user_path, method: 'post', html: { novalidate: 'novalidate' } do |f|
+        fieldset name="Join Game" id="fieldset-join-game"
+          .form-group
+            = f.label :name, "Name"
+            = f.text_field :name,
+                  maxlength: '10',
+                  class: "form-control form-control-sm#{validation_class(model, :name)}"
+            = validation_text(model, :name)
+          .form-group
+            = f.label :game_id, "Game ID"
+            = f.number_field :game_id,
+                  value: insert_game_id,
+                  class: "form-control form-control-sm#{validation_class(model, :game_id)}",
+                  required: 'required'
+            = validation_text(model, :game_id)
+          .form-group
+            = f.label :game_key, "Game Key"
+            = f.text_field :game_key,
+                  class: "form-control form-control-sm#{validation_class(model, :game_key)}",
+                  required: 'required'
+            = validation_text(model, :game_key)
+
+        fieldset name="Additional" id="fieldset-additional"
+          .form-group
+            .form-check
+              = f.check_box :legal,
+                    class: "form-check-input#{validation_class(model, :legal)}",
+                    required: 'required'
+              = f.label :legal, "I accept Data Privacy & AGB", class: 'form-check-label'
+              = validation_text(model, :legal)
+
+        .row
+          .col-6 = link_to "Back", index_path, class: 'btn btn-secondary'
+          .col-6 = f.submit "Submit", class: 'btn btn-primary'
