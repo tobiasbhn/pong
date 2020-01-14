@@ -1,30 +1,53 @@
-p = flash[:alert]
-p = flash[:notice]
-h1.h3 NEW GAME
-= link_to "Back", index_path, class: 'btn btn-primary'
+.pong-container
+  .pong-card
+    .card-body
+      h1.h3.card-title NEW GAME
+      = cell(Pong::Cell::Flash)
 
-= form_for model, as: 'game', url: create_game_path, method: 'post' do |f|
-  = f.radio_button :mode, "party", checked: 'checked', required: 'required'
-  = label_tag :mode_party, "Party"
-  p = model.errors.messages[:mode].first if model.respond_to?(:errors) && model.errors.key?(:mode)
-  br
-  = f.radio_button :mode, "multiplayer", required: 'required'
-  = label_tag :mode_multiplayer, "Multiplayer"
-  p = model.errors.messages[:mode].first if model.respond_to?(:errors) && model.errors.key?(:mode)
-  br
-  = f.radio_button :mode, "splitscreen", required: 'required'
-  = label_tag :mode_splitscreen, "Splitscreen"
-  p = model.errors.messages[:mode].first if model.respond_to?(:errors) && model.errors.key?(:mode)
-  br
-  = f.check_box :protect
-  = label_tag :protect, "Protect Game with Password?"
-  p = model.errors.messages[:protect].first if model.respond_to?(:errors) && model.errors.key?(:protect)
-  br
-  = f.password_field :password
-  = label_tag :password, "Choose Password"
-  p = model.errors.messages[:password].first if model.respond_to?(:errors) && model.errors.key?(:password)
-  br
-  = check_box_tag :fullscreen
-  = label_tag :fullscreen, "Open Fullscreen"
-  br
-  = f.submit "Submit", class: 'btn btn-primary'
+      = form_for model, as: 'game', url: create_game_path, method: 'post', html: { novalidate: 'novalidate' } do |f|
+        fieldset name="Game Mode" id="fieldset-game-mode"
+          legend.h5 Game Mode
+          .form-group
+            .form-check
+              = f.radio_button :mode, "party",
+                    class: "form-check-input#{validation_class(model, :mode)}",
+                    checked: 'checked',
+                    required: 'required'
+              = f.label :mode_party, "Party", class: 'form-check-label'
+            .form-check
+              = f.radio_button :mode, "multiplayer",
+                    class: "form-check-input#{validation_class(model, :mode)}",
+                    required: 'required'
+              = f.label :mode_multiplayer, "Multiplayer", class: 'form-check-label'
+            .form-check
+              = f.radio_button :mode, "splitscreen",
+                    class: "form-check-input#{validation_class(model, :mode)}",
+                    required: 'required'
+              = f.label :mode_splitscreen, "Splitscreen", class: 'form-check-label'
+              = validation_text(model, :mode)
+
+        fieldset name="Protection" id="fieldset-protection"
+          legend.h5 Protection
+          .form-group.form-check
+            = f.check_box :protect, class: "form-check-input#{validation_class(model, :protect)}"
+            = f.label :protect, "Protected?", class: 'form-check-label'
+            = validation_text(model, :protect)
+          .form-group
+            = label_tag :password, "Choose Password"
+            = f.password_field :password, class: "form-control form-control-sm#{validation_class(model, :password)}"
+            = validation_text(model, :password)
+
+        fieldset name="Additional" id="fieldset-additional"
+          .form-group
+            .form-check
+              = f.check_box :fullscreen, class: "form-check-input#{validation_class(model, :fullscreen)}"
+              = f.label :fullscreen, "Open Fullscreen", class: 'form-check-label'
+              = validation_text(model, :fullscreen)
+            .form-check
+              = f.check_box :legal, class: "form-check-input#{validation_class(model, :legal)}", required: 'required'
+              = f.label :legal, "I accept Data Privacy & AGB", class: 'form-check-label'
+              = validation_text(model, :legal)
+
+        .row
+          .col-6 = link_to "Back", index_path, class: 'btn btn-secondary'
+          .col-6 = f.submit "Submit", class: 'btn btn-primary'

@@ -1,5 +1,4 @@
-p = flash[:alert]
-p = flash[:notice]
+= cell(Pong::Cell::Flash)
 h1.h3 Password required to join Game
 = form_for :password, url: user_auth_path, method: 'post' do |f|
   = f.password_field :password

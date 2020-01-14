@@ -4,6 +4,8 @@ class Game < ApplicationRecord
   after_create :create_consumer
   has_secure_password :password, validations: false
 
+  attr_accessor :fullscreen, :legal
+
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where.not(active: true) }
