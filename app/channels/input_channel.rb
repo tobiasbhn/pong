@@ -1,4 +1,4 @@
-class GameChannel < ApplicationCable::Channel
+class InputChannel < ApplicationCable::Channel
   def subscribed
     stream_from "controlls_#{game_id}"
   end

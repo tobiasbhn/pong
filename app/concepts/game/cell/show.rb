@@ -11,17 +11,23 @@ module Game::Cell
     def get_cells
       case [consumer.consumable_type, game.mode]
       when ["Game", "party"]
-        "Would render Game View without Controlls"
-      when ["Game", "multiplayer"]
-        "Would render Game View with one side Controlls"
+        module1 = cell(Game::Cell::Module::Connection, consumer: consumer, game: game)
+        module2 = cell(Game::Cell::Module::Game, consumer: consumer, game: game)
+        "#{module1}#{module2}".html_safe
+      when ["Game", "multiplayer"], ["User", "multiplayer"]
+        module1 = cell(Game::Cell::Module::Connection, consumer: consumer, game: game)
+        module2 = cell(Game::Cell::Module::Game, consumer: consumer, game: game)
+        module3 = cell(Game::Cell::Module::InputMultiplayer, consumer: consumer, game: game)
+        "#{module1}#{module2}#{module3}".html_safe
       when ["Game", "splitscreen"]
-        "Would render Game View with both Controlls"
+        module1 = cell(Game::Cell::Module::Connection, consumer: consumer, game: game)
+        module2 = cell(Game::Cell::Module::Game, consumer: consumer, game: game)
+        module3 = cell(Game::Cell::Module::InputSplitscreen, consumer: consumer, game: game)
+        "#{module1}#{module2}#{module3}".html_safe
       when ["User", "party"]
-        "Would render Only Controlls"
-      when ["User", "multiplayer"]
-        "Would render Game view with one side Controlls"
-      when ["User", "splitscreen"]
-        "Probably not possible"
+        module1 = cell(Game::Cell::Module::Connection, consumer: consumer, game: game)
+        module2 = cell(Game::Cell::Module::InputParty, consumer: consumer, game: game)
+        "#{module1}#{module2}".html_safe
       else
         "Else (Type: #{consumer.consumable_type}; Mode: #{game.mode})"
       end

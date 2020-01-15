@@ -4,12 +4,17 @@
     @content;
   }
 }
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
 
 body {
   background-color: black;
   overflow-x: hidden;
-  width: 100vw;
-  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 .pong-container {
@@ -26,5 +31,68 @@ body {
     width: 100%;
     margin-top: 5px;
     margin-bottom: 5px;
+  }
+}
+
+
+// MAIN CONTAINER
+.pong-fullscreen {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+.pong-landscape-fullscreen {
+  position: fixed;
+  width: 100vh;
+  height: 100vw;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%) rotate(90deg);
+
+  @include landscape {
+    transform: translate(-50%, -50%) rotate(0deg);
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+// GAME
+.pong-game {
+  .game-bg {
+    width: 100%;
+    height: 100%;
+    background-color: indianred;
+  }
+}
+
+// INPUT
+.pong-input {
+  .group {
+    width: 100%;
+    height: 100%;
+    background-color: cadetblue;
+    float: left;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+  .multiple {
+    width: 50%;
+  }
+  .right {
+    direction: ltr;
+  }
+  .left {
+    direction: rtl;
+  }
+  .space {
+    direction: ltr;
+    width: 100%;
+    height: 90%;
+  }
+  .input {
+    background-color: black;
+    direction: ltr;
+    width: 100%;
+    height: 10%;
   }
 }

@@ -3,19 +3,19 @@ import consumer from "../channels/consumer"
 
 export default class extends Controller {
   initialize() {
-    this.cable = consumer.subscriptions.create( "ControllsChannel", {
+    this.cable = consumer.subscriptions.create( "InputChannel", {
       connected() {
-        console.log("ControllsChannel Connected");
+        console.log("InputChannel Connected");
       },
       rejected() {
-        console.log("ControllsChannel Rejected");
+        console.log("InputChannel Rejected");
       },
       disconnected() {
-        console.log("ControllsChannel Disconnected");
+        console.log("InputChannel Disconnected");
         document.location.href = "/";
       },
       received(data) {
-        console.log("ControllsChannel " + data)
+        console.log("InputChannel " + data)
       }
     });
   }
