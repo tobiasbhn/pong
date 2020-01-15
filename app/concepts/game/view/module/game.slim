@@ -1,7 +1,2 @@
-div data-controller="game"
-  h1 show Game
-  p Debug Informations:
-  p Role: #{consumer&.consumable_type}#{": " + consumer&.consumable&.name if consumer&.consumable_type == "User"}
-  p UUID: #{consumer&.id}
-  p Game ID: #{game&.id}
-  p Game Key: #{game&.key}
+.pong-landscape-fullscreen.pong-game data-controller="game"
+  .game-bg Test

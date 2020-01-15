@@ -1,7 +1,10 @@
-div data-controller="connection"
-  h1 show Connection
-  p Debug Informations:
-  p Role: #{consumer&.consumable_type}#{": " + consumer&.consumable&.name if consumer&.consumable_type == "User"}
-  p UUID: #{consumer&.id}
-  p Game ID: #{game&.id}
-  p Game Key: #{game&.key}
+= content_tag :div,
+      class: 'pong-connection',
+      data: { \
+        controller: 'connection',
+        game_id: game&.id,
+        game_key: game&.key,
+        uuid: consumer&.id,
+        game_mode: game&.mode \
+      }
+  .test
