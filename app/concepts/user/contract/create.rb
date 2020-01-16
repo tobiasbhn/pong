@@ -35,7 +35,7 @@ module User::Contract
     property :game_key,
       validates: {
         presence: true,
-        unique: true,
+        unique: false,
         length: {
           minimum: 5,
           maximum: 5,
