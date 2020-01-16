@@ -39,6 +39,12 @@ body {
   position: fixed;
   height: 100%;
   width: 100%;
+}
+.pong-relative {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
   background-color: darkcyan;
   display: flex;
   flex-direction: column;
@@ -50,7 +56,7 @@ body {
   background-color: darkgoldenrod;
 
   @include landscape {
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100%;
     padding-bottom: 0;
@@ -61,7 +67,7 @@ body {
   flex-grow: 1;
 
   @include landscape {
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100%;
   }

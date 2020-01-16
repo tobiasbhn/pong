@@ -1,5 +1,5 @@
 module Game::Cell::Module
-  class InputMultiplayer < Pong::Cell::Base
+  class InputDual < Pong::Cell::Base
     def consumer
       model[:consumer]
     end
