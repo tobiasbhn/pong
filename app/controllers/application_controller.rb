@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
 
   def auto_locale
     locales = request.env['HTTP_ACCEPT_LANGUAGE'] || I18n.default_locale
-    locales.scan(/[a-z]{2}(?=;)/).find do |locale|
+    locales.to_s.scan(/[a-z]{2}(?=;)/).find do |locale|
       I18n.available_locales.include?(locale.to_sym)
     end
   end

@@ -1,5 +1,5 @@
 module Game::Cell::Module
-  class InputParty < Pong::Cell::Base
+  class InputSingle < Pong::Cell::Base
     def consumer
       model[:consumer]
     end

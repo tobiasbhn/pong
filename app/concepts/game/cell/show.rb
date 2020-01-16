@@ -17,16 +17,16 @@ module Game::Cell
       when ["Game", "multiplayer"], ["User", "multiplayer"]
         module1 = cell(Game::Cell::Module::Connection, consumer: consumer, game: game)
         module2 = cell(Game::Cell::Module::Game, consumer: consumer, game: game)
-        module3 = cell(Game::Cell::Module::InputMultiplayer, consumer: consumer, game: game)
+        module3 = cell(Game::Cell::Module::InputSingle, consumer: consumer, game: game)
         "#{module1}#{module2}#{module3}".html_safe
       when ["Game", "splitscreen"]
         module1 = cell(Game::Cell::Module::Connection, consumer: consumer, game: game)
         module2 = cell(Game::Cell::Module::Game, consumer: consumer, game: game)
-        module3 = cell(Game::Cell::Module::InputSplitscreen, consumer: consumer, game: game)
+        module3 = cell(Game::Cell::Module::InputDual, consumer: consumer, game: game)
         "#{module1}#{module2}#{module3}".html_safe
       when ["User", "party"]
         module1 = cell(Game::Cell::Module::Connection, consumer: consumer, game: game)
-        module2 = cell(Game::Cell::Module::InputParty, consumer: consumer, game: game)
+        module2 = cell(Game::Cell::Module::InputSingle, consumer: consumer, game: game)
         "#{module1}#{module2}".html_safe
       else
         "Else (Type: #{consumer.consumable_type}; Mode: #{game.mode})"
