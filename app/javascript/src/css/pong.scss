@@ -10,6 +10,7 @@
   }
 }
 
+// GENERAL
 body {
   background-color: black;
   overflow-x: hidden;
@@ -17,10 +18,10 @@ body {
   padding: 0;
 }
 
+// STATIC PAGES
 .pong-container {
   @extend .container;
 }
-
 .pong-card {
   @extend .card;
   @extend .container;
@@ -34,7 +35,7 @@ body {
   }
 }
 
-
+// DYNAMIC GAME#SHOW PAGE
 .pong-no-resize {
   position: fixed;
   height: 100%;

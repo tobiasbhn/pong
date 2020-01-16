@@ -1,6 +1,6 @@
 class InputChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "controlls_#{game_id}"
+    stream_from "input_#{game_id}"
   end
 
   def unsubscribed
