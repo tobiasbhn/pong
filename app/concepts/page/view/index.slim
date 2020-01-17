@@ -3,6 +3,5 @@
     .card-body
       h1.h3.card-title PONG
       = cell(Pong::Cell::Flash)
-      .row
-        = link_to "New Game", new_game_path, class: 'btn btn-primary'
-        = link_to "Join Game", new_user_path, class: 'btn btn-primary'
+      = link_to "New Game", new_game_path, class: 'btn btn-primary'
+      = link_to "Join Game", new_user_path, class: 'btn btn-primary'
