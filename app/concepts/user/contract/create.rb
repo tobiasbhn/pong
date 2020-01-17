@@ -55,10 +55,13 @@ module User::Contract
       }
 
     validate do
-      puts game_id
       if !(Game.exists?(id: game_id) && Game.find(game_id).key == game_key)
         errors.add(:game_key, 'Kombination nicht gültig')
         errors.add(:game_id, 'Kombination nicht gültig')
+      else
+        if !Game.find_by(id: game_id).joinable?
+          errors.add(:game_id, 'Dem Spiel kann nicht beigetreten werden oder es ist bereits voll')
+        end
       end
     end
   end

@@ -3,6 +3,7 @@ import consumer from "../channels/consumer"
 
 export default class extends Controller {
   static targets = ["scrollHeight"]
+  oldPercent = 0;
 
   initialize() {
     this.cable = consumer.subscriptions.create( "InputChannel", {
@@ -23,12 +24,13 @@ export default class extends Controller {
   }
 
   scroll(event) {
-    // console.log("SCROLLED: ")
-    // console.log(event)
-
     var scrollPos = event.target.scrollTop;
     var height = this.scrollHeightTarget.offsetHeight;
     var percent = parseInt(100 * scrollPos / height);
-    console.log(percent)
+    percent = percent * -1 + 100
+    if (this.oldPercent != percent) {
+      console.log(percent)
+      this.oldPercent = percent
+    }
   }
 }

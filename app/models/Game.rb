@@ -6,8 +6,11 @@ class Game < ApplicationRecord
 
   attr_accessor :fullscreen, :legal
 
-
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where.not(active: true) }
   scope :inactive_to_long, -> { inactive.where("updated_at < ?", 1.minute.ago) }
+
+  def joinable?
+    mode == 'party' || mode == 'multiplayer' && users.count == 0
+  end
 end
