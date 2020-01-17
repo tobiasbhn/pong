@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_10_135714) do
+ActiveRecord::Schema.define(version: 2020_01_17_091223) do
 
   create_table "consumers", force: :cascade do |t|
     t.string "consumable_type"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2020_01_10_135714) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "active", default: false
-    t.integer "client_count", default: 0
+    t.integer "instance_count", default: 0
     t.index ["consumable_type", "consumable_id"], name: "index_consumers_on_consumable_type_and_consumable_id"
   end
 
@@ -33,11 +33,12 @@ ActiveRecord::Schema.define(version: 2020_01_10_135714) do
 
   create_table "users", force: :cascade do |t|
     t.integer "game_id"
-    t.integer "queue"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "game_key"
+    t.datetime "enqueued_at", precision: 6
+    t.integer "queue_pos"
     t.index ["game_id"], name: "index_users_on_game_id"
   end
 

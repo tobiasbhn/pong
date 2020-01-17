@@ -17,7 +17,7 @@ class User::Operation::Create < Trailblazer::Operation
 
   def kick_old_consumer!(options, cookie:, **)
     puts "User::Create::Operation: kick_old_consumer".tb
-    result = Consumer::KickPrevious.(cookie: cookie)
+    result = Consumer::Operation::KickPrevious.(cookie: cookie)
     result.success?
   end
 
