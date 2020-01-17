@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     cookie = consumer_cookie
     if Consumer.exists?(id: cookie&.[](:value))
       consumer = Consumer.find(cookie[:value])
-      consumer_game_id = consumer.consumable_type == "Game" ? consumer.consumable.id : consumer.consumable.game_id
+      consumer_game_id = consumer.consumable[:game_id].presence || consumer.consumable[:id]
 
       # x.to_time to get the same Format (Thu, 09 Jan 2020 10:54:46 UTC +00:00 != "2020-01-09 10:54:46 UTC")
       # x.to_i to get rid of the milliseconds (1578567286.696185 != 1578567286.0)

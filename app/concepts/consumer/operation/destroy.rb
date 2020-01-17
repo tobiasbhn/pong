@@ -1,4 +1,4 @@
-class Consumer::Destroy < Trailblazer::Operation
+class Consumer::Operation::Destroy < Trailblazer::Operation
   step :model!
   pass :notify!
   step :destroy!
@@ -10,11 +10,8 @@ class Consumer::Destroy < Trailblazer::Operation
 
   def notify!(options, model:, **)
     puts "Consumer::Destroy::Operation: notify".tb
-    if model.consumable_type == "Game"
-      ActionCable.server.broadcast("game_#{model.consumable&.id}", "Host disconnected!")
-    else
-      ActionCable.server.broadcast("game_#{model.consumable&.game_id}", "User disconnected!")
-    end
+    game_id = model.consumable[:game_id].presence || model.consumable[:id]
+    ActionCable.server.broadcast("game_#{game_id}", "#{model.consumable_type} disconnected!")
   end
 
   def destroy!(options, model:, **)

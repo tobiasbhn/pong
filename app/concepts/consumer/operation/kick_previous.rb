@@ -1,4 +1,4 @@
-class Consumer::KickPrevious < Trailblazer::Operation
+class Consumer::Operation::KickPrevious < Trailblazer::Operation
   step :present?, fast_track: true
   step :model!, fast_track: true
   step :check_consumer!, fast_track: true

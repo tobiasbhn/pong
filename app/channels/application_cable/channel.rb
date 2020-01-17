@@ -1,11 +1,7 @@
 module ApplicationCable
   class Channel < ActionCable::Channel::Base
     def game_id
-      if is_host?
-        current_consumer&.consumable&.id
-      else
-        current_consumer&.consumable&.game_id
-      end
+      current_consumer&.consumable[:game_id].presence || current_consumer&.consumable[:id]
     end
 
     def is_host?
