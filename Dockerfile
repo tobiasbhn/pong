@@ -3,20 +3,30 @@ FROM ruby:2.6.5-alpine
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
 
-RUN mkdir /pong
 WORKDIR /pong
-
-COPY Gemfile /pong/Gemfile
-COPY Gemfile.lock /pong/Gemfile.lock
-RUN bundle install
-
-COPY . /pong
-
-# Add a script to be executed every time the container starts.
+COPY Gemfile* ./
 COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
+
+RUN apk update \
+    && apk add --no-cache \
+        less \
+        dumb-init \
+        libpq \
+        tzdata \
+        nodejs \
+        yarn \
+        build-base \
+        git \
+        openssh-client \
+        postgresql-dev \
+        bash \
+    && rm -rf /var/lib/apt/lists/* \
+    && gem install bundler:2.0.2 \
+    && bundle install \
+    && chmod +x /usr/bin/entrypoint.sh
+
 ENTRYPOINT ["entrypoint.sh"]
+COPY . .
 EXPOSE 3000
 
-# Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]

@@ -12,9 +12,12 @@
 
 ActiveRecord::Schema.define(version: 2020_01_17_091223) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "consumers", force: :cascade do |t|
     t.string "consumable_type"
-    t.integer "consumable_id"
+    t.bigint "consumable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "active", default: false
@@ -32,7 +35,7 @@ ActiveRecord::Schema.define(version: 2020_01_17_091223) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.integer "game_id"
+    t.bigint "game_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
