@@ -8,7 +8,7 @@ class Game::Operation::Create < Trailblazer::Operation
   fail :alert_message!
 
   def define_id!(options, params:, **)
-    puts "Game::Create::Operation: define_id".tb
+    Rails.logger.debug "Game::Create::Operation: define_id".tb
     params[:game][:id]
     while params[:game][:id].nil?
       id = rand(10000..99999)
@@ -18,7 +18,7 @@ class Game::Operation::Create < Trailblazer::Operation
   end
 
   def define_key!(options, params:, **)
-    puts "Game::Create::Operation: define_key".tb
+    Rails.logger.debug "Game::Create::Operation: define_key".tb
     num_space = ('2'..'9').to_a
     char_space = ('a'..'h').to_a + ('j'..'k').to_a + ('m'..'z').to_a
     cap_space = ('A'..'H').to_a + ('J'..'K').to_a + ('M'..'Z').to_a
@@ -27,13 +27,13 @@ class Game::Operation::Create < Trailblazer::Operation
   end
 
   def kick_old_consumer!(options, cookie:, **)
-    puts "Game::Create::Operation: kick_old_consumer".tb
+    Rails.logger.debug "Game::Create::Operation: kick_old_consumer".tb
     result = Consumer::Operation::KickPrevious.(cookie: cookie)
     result.success?
   end
 
   def alert_message!(options, **)
-    puts "Game::Create::Operation: alert_message".tb
+    Rails.logger.debug "Game::Create::Operation: alert_message".tb
     options[:flash_alert] = "Game Create Error"
   end
 end
