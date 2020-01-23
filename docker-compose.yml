@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_PASSWORD: rails
       POSTGRES_USER: rails
-      POSTGRES_DB: pong_development
+      POSTGRES_MULTIPLE_DATABASES: pong_development, pong_test
       
   web:
     build: .

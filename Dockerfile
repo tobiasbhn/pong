@@ -20,6 +20,8 @@ RUN apk update \
         openssh-client \
         postgresql-dev \
         bash \
+        chromium \
+        chromium-chromedriver \
     && rm -rf /var/lib/apt/lists/* \
     && gem install bundler:2.0.2 \
     && bundle install \
