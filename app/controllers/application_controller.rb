@@ -8,16 +8,16 @@ class ApplicationController < ActionController::Base
 
   private
   def authenticate!
-    puts "User need to authenticate befor Action".green
+    Rails.logger.debug "User need to authenticate befor Action".green
     if authenticated?
-      puts "User successfuly authenticated".green
+      Rails.logger.debug "User successfuly authenticated".green
       true
     elsif Game.exists?(id: params[:game_id])
-      puts "User not authenticated but Game Exists, so hes probably invited".green
+      Rails.logger.debug "User not authenticated but Game Exists, so hes probably invited".green
       flash[:notice] = t('flash.notice.invite')
       redirect_to new_user_path(game_id: params[:game_id])
     else
-      puts "Game does not exist".red
+      Rails.logger.debug "Game does not exist".red
       flash[:alert] = "Game not found."
       redirect_to index_path
     end
@@ -35,15 +35,15 @@ class ApplicationController < ActionController::Base
       is_right_game = params[:game_id].to_i == consumer_game_id
 
       if !is_right_consumer
-        puts "Could not authentiate User: Consumer found, but does not match expected Consumer".red
+        Rails.logger.debug "Could not authentiate User: Consumer found, but does not match expected Consumer".red
       end
       if !is_right_game
-        puts "Could not authentiate User: Consumer found, but is not authenticated for this Game".red
+        Rails.logger.debug "Could not authentiate User: Consumer found, but is not authenticated for this Game".red
       end
 
       is_right_consumer && is_right_game && Game.exists?(id: consumer_game_id)
     else
-      puts "Could not authentiate User: Requested Consumer not found or no Cookie present".red
+      Rails.logger.debug "Could not authentiate User: Requested Consumer not found or no Cookie present".red
       false
     end
   end
@@ -52,21 +52,21 @@ class ApplicationController < ActionController::Base
     game = Game.find_by(id: params[:game_id])
     cookie = protect_cookie
     if game.present? && !game.protect
-      puts "Game is not Password-Protected".green
+      Rails.logger.debug "Game is not Password-Protected".green
       true
     elsif game.present?
       if cookie&.[](:value) == game.id && cookie&.[](:time).to_time.to_i == game.created_at.to_time.to_i
-        puts "Game is Password-Protected: User successfuly authenticated".green
+        Rails.logger.debug "Game is Password-Protected: User successfuly authenticated".green
         true
       else
-        puts "Game is Password-Protected: User need to authenticate before".red
+        Rails.logger.debug "Game is Password-Protected: User need to authenticate before".red
         render_cell(
           page_cell: User::Cell::Auth,
           header_cell: User::Header::Cell::Auth
         )
       end
     else
-      puts "Game not found".red
+      Rails.logger.debug "Game not found".red
       false
     end
   end
@@ -79,10 +79,10 @@ class ApplicationController < ActionController::Base
   def set_locale!
     lang = params[:lang]
     if lang.blank?
-      puts "Applicationcontroller: before_action set_language: No language selected: Going to Auto-Select language and redirect".red
+      Rails.logger.debug "Applicationcontroller: before_action set_language: No language selected: Going to Auto-Select language and redirect".red
       redirect_to controller: params[:controller], action: params[:action], lang: auto_locale
     else
-      puts "Applicationcontroller: before_action set_language: Selected Language: #{lang}".green
+      Rails.logger.debug "Applicationcontroller: before_action set_language: Selected Language: #{lang}".green
       I18n.locale = lang
     end
   end
