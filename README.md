@@ -50,3 +50,11 @@ $ docker ps
 $ docker exec -it 0afe60f469eb /bin/bash
 $ rails c
 ```
+
+
+
+## TESTS?
+
+```bash
+docker-compose run web bundle exec rails test test/system
+```
