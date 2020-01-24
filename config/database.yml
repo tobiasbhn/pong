@@ -1,19 +1,20 @@
-development:
+default: &default
   adapter: postgresql
   encoding: unicode
-  database: pong_development
-  pool: 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: postgres
   username: rails
   password: rails
-  host: postgres
   port: 5432
 
+development:
+  <<: *default
+  database: pong_development
+
 test:
-  adapter: postgresql
-  encoding: unicode
+  <<: *default
   database: pong_test
-  pool: 5
-  username: rails
-  password: rails
-  host: postgres
-  port: 5432
+
+production:
+  <<: *default
+  database: pong_production

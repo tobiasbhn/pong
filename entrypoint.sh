@@ -4,14 +4,12 @@ set -e
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /pong/tmp/pids/server.pid
 
-echo "Checking yarn installations ..."
-yarn install --check-files &> /dev/null
-echo "Precompiling assets ..."
-bin/rails assets:precompile &> /dev/null
+# yarn install --check-files
 
 echo "Preparing Tables ..."
-rake db:create &> /dev/null
-rake db:migrate &> /dev/null
+# depends on custom db:exists Task to check if database exists (lib/tasks/db_exists.rake)
+# Source: https://stackoverflow.com/a/35732641
+rake db:exists && rake db:migrate || rake db:setup
 
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
 exec "$@"
