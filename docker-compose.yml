@@ -6,15 +6,23 @@ services:
     environment:
       POSTGRES_PASSWORD: rails
       POSTGRES_USER: rails
-      POSTGRES_MULTIPLE_DATABASES: pong_development, pong_test
       
+  # web:
+  #   build: .
+  #   restart: always
+  #   args:
+  #     app_path: /pong/
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - .:/pong
   web:
-    build: .
-    restart: always
+    image: pong_web:prod
+    # restart: always
     ports:
       - "3000:3000"
-    links:
-      - postgres
     depends_on:
       - postgres
     volumes:
