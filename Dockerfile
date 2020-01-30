@@ -1,41 +1,3 @@
-# FROM ruby:2.6.5-alpine
-# LABEL maintainer="Tobias Bohn <info@tobiasbohn.com>"
-
-# # throw errors if Gemfile has been modified since Gemfile.lock
-# RUN bundle config --global frozen 1
-
-# WORKDIR /pong
-# COPY Gemfile* ./
-# COPY entrypoint.sh /usr/bin/
-
-# RUN apk update \
-#     && apk add --no-cache \
-#         less \
-#         dumb-init \
-#         libpq \
-#         tzdata \
-#         nodejs \
-#         yarn \
-#         build-base \
-#         git \
-#         openssh-client \
-#         postgresql-dev \
-#         bash \
-#         chromium \
-#         chromium-chromedriver \
-#     && rm -rf /var/lib/apt/lists/* \
-#     && gem install bundler:2.0.2 \
-#     && bundle install \
-#     && chmod +x /usr/bin/entrypoint.sh
-
-# ENTRYPOINT ["entrypoint.sh"]
-# COPY . .
-# EXPOSE 3000
-
-# CMD ["rails", "server", "-b", "0.0.0.0"]
-
-
-
 #######################################################################
 #  BUILDER  ###########################################################
 #######################################################################
@@ -70,6 +32,7 @@ COPY Gemfile* ${app_path}
 FROM builder AS dev_bundle
 
 RUN bundle install -j4 --retry 3 \
+    && bundle clean --force \
     && rm -rf /usr/local/bundle/cache/*.gem \
     && find /usr/local/bundle/gems/ -name "*.c" -delete \
     && find /usr/local/bundle/gems/ -name "*.o" -delete
@@ -104,6 +67,8 @@ RUN apk --update --no-cache add \
 COPY --from=dev_bundle /usr/local/bundle/ /usr/local/bundle/
 COPY --from=dev_bundle ${app_path} ${app_path}
 
+RUN yarn install --check-files
+
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["rails", "server", "-b", "0.0.0.0"]
 
@@ -116,12 +81,13 @@ CMD ["rails", "server", "-b", "0.0.0.0"]
 FROM builder AS prod_bundle
 
 RUN bundle install --without development test -j4 --retry 3 \
+    && bundle clean --force \
     && rm -rf /usr/local/bundle/cache/*.gem \
     && find /usr/local/bundle/gems/ -name "*.c" -delete \
     && find /usr/local/bundle/gems/ -name "*.o" -delete
 
 COPY . ${app_path}
-RUN yarn install --check-files \
+RUN yarn install --check-files --prod \
     && RAILS_ENV=production bundle exec rake assets:precompile \
     && rm -rf node_modules tmp/cache app/assets vendor/assets lib/assets spec
 
