@@ -4,8 +4,6 @@ set -e
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /pong/tmp/pids/server.pid
 
-# yarn install --check-files
-
 echo "Preparing Tables ..."
 # depends on custom db:exists Task to check if database exists (lib/tasks/db_exists.rake)
 # Source: https://stackoverflow.com/a/35732641
