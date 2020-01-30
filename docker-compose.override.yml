@@ -1,0 +1,18 @@
+version: '3'
+services:
+  postgres:
+    environment:
+      POSTGRES_USER: rails
+      POSTGRES_PASSWORD: rails
+      
+  web:
+    image: pong_web:dev
+    volumes:
+      - .:/pong
+      - node_modules:/pong/node_modules/
+    # environment:
+    #   DB_USER: rails
+    #   DB_PASSWORD: rails
+
+volumes:
+  node_modules:

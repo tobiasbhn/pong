@@ -2,32 +2,9 @@ version: '3'
 services:
   postgres:
     image: postgres:11.4
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: rails
-      POSTGRES_USER: rails
       
-  # web:
-  #   build: .
-  #   restart: always
-  #   args:
-  #     app_path: /pong/
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - postgres
-  #   volumes:
-  #     - .:/pong
   web:
-    image: pong_web:prod
-    # restart: always
     ports:
       - "3000:3000"
     depends_on:
       - postgres
-#     volumes:
-#       - .:/pong
-#       - node_modules:/pong/node_modules/
-
-# volumes:
-#   node_modules:
