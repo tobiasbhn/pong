@@ -25,5 +25,9 @@ services:
       - "3000:3000"
     depends_on:
       - postgres
-    volumes:
-      - .:/pong
+#     volumes:
+#       - .:/pong
+#       - node_modules:/pong/node_modules/
+
+# volumes:
+#   node_modules:

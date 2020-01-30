@@ -1,23 +1,52 @@
-.byebug_history
-.git
-.gitignore
-.history
-.vscode
-.bundle
-.ruby-version
-.ruby-gemset
-.rvmrc
-*Dockerfile
-README*
-config/settings.local.yml
-deploy
-doc
-docker-compose.yml
-log
-node_modules
-storage
-test
-tmp
-vendor/cache
-config/master.key
-lib/cms
+# .dockerignore file to INCLUDE files (not exclude), as described on:
+# https://youknowfordevs.com/2018/12/07/getting-control-of-your-dockerignore-files.html
+
+# Exclude everything:
+*
+
+# Now un-exclude needed files
+# Root Folders
+!app
+!bin
+!lib
+
+# Root Files
+!Gemfile*
+!Rakefile
+!entrypoint.sh
+!package.json
+!postcss.config.js
+!babel.config.js
+!config.ru
+!yarn.lock
+
+# Config Folder
+!config/environments
+!config/initializers
+!config/locales
+!config/webpack
+!config/application.rb
+!config/boot.rb
+!config/cable.yml
+!config/credentials.yml.enc
+!config/database.yml
+!config/environment.rb
+!config/puma.rb
+!config/routes.rb
+!config/spring.rb
+!config/storage.yml
+!config/webpacker.yml
+
+# DB Folder
+!db/migrate
+!db/schema.rb
+!db/seeds.rb
+
+# Public Folder
+!public/404.html
+!public/422.html
+!public/500.html
+!public/*.png
+!public/favicon.ico
+!public/robots.txt
+!public/humans.txt
