@@ -1,12 +1,22 @@
 #######################################################################
+#  BASE  ##############################################################
+#######################################################################
+FROM ruby:2.6.5-alpine AS base
+LABEL maintainer="Tobias Bohn <info@tobiasbohn.com>"
+
+ARG APP_PATH=/pong/
+ARG RAILS_MASTER_KEY
+ENV APP_PATH=$APP_PATH \
+    RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+
+WORKDIR $APP_PATH
+
+
+
+#######################################################################
 #  BUILDER  ###########################################################
 #######################################################################
-FROM ruby:2.6.5-alpine AS builder
-MAINTAINER Tobias Bohn <info@tobiasbohn.com>
-
-ARG app_path=/pong/
-ARG RAILS_MASTER_KEY=
-ENV RAILS_MASTER_KEY ${RAILS_MASTER_KEY}
+FROM base AS builder
 
 RUN bundle config --global frozen 1 \
     && apk --no-cache --update add \
@@ -20,14 +30,12 @@ RUN bundle config --global frozen 1 \
         git \
     && gem install bundler:2.0.2
 
-WORKDIR ${app_path}
-COPY Gemfile* ${app_path}
-
+COPY Gemfile* $APP_PATH
 
 
 
 #######################################################################
-#  DEVELOPMENT  #######################################################
+#  DEVELOPMENT BUNDLE  ################################################
 #######################################################################
 FROM builder AS dev_bundle
 
@@ -37,21 +45,34 @@ RUN bundle install -j4 --retry 3 \
     && find /usr/local/bundle/gems/ -name "*.c" -delete \
     && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-COPY . ${app_path}
+COPY . $APP_PATH
+
 
 
 #######################################################################
+#  PRODUCTION BUNDLE  #################################################
 #######################################################################
-FROM ruby:2.6.5-alpine AS development
-MAINTAINER Tobias Bohn <info@tobiasbohn.com>
+FROM builder AS prod_bundle
 
-ARG RAILS_MASTER_KEY=
-ENV RAILS_MASTER_KEY ${RAILS_MASTER_KEY}
+RUN bundle install --without development test -j4 --retry 3 \
+    && bundle clean --force \
+    && rm -rf /usr/local/bundle/cache/*.gem \
+    && find /usr/local/bundle/gems/ -name "*.c" -delete \
+    && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-ARG app_path=/pong/
-WORKDIR ${app_path}
+COPY . $APP_PATH
+RUN yarn install --check-files --prod \
+    && RAILS_ENV=production bundle exec rake assets:precompile \
+    && rm -rf node_modules tmp/cache app/assets vendor/assets lib/assets spec
+
+
+
+#######################################################################
+#  DEVELOPMENT FINAL  #################################################
+#######################################################################
+FROM base AS development
+
 EXPOSE 3000
-
 COPY entrypoint.sh /usr/bin/
 
 RUN apk --update --no-cache add \
@@ -65,7 +86,7 @@ RUN apk --update --no-cache add \
     && chmod +x /usr/bin/entrypoint.sh
 
 COPY --from=dev_bundle /usr/local/bundle/ /usr/local/bundle/
-COPY --from=dev_bundle ${app_path} ${app_path}
+COPY --from=dev_bundle $APP_PATH $APP_PATH
 
 RUN yarn install --check-files
 
@@ -74,41 +95,17 @@ CMD ["rails", "server", "-b", "0.0.0.0"]
 
 
 
-
 #######################################################################
-#  PRODUCTION  ########################################################
+#  PRODUCTION FINAL  ##################################################
 #######################################################################
-FROM builder AS prod_bundle
+FROM base AS production
 
-RUN bundle install --without development test -j4 --retry 3 \
-    && bundle clean --force \
-    && rm -rf /usr/local/bundle/cache/*.gem \
-    && find /usr/local/bundle/gems/ -name "*.c" -delete \
-    && find /usr/local/bundle/gems/ -name "*.o" -delete
+ENV RAILS_ENV=production \
+    RAILS_LOG_TO_STDOUT=true \
+    RAILS_SERVE_STATIC_FILES=true \
+    EXECJS_RUNTIME=Disabled
 
-COPY . ${app_path}
-RUN yarn install --check-files --prod \
-    && RAILS_ENV=production bundle exec rake assets:precompile \
-    && rm -rf node_modules tmp/cache app/assets vendor/assets lib/assets spec
-
-
-#######################################################################
-#######################################################################
-FROM ruby:2.6.5-alpine AS production
-MAINTAINER Tobias Bohn <info@tobiasbohn.com>
-
-ARG RAILS_MASTER_KEY=
-ENV RAILS_MASTER_KEY ${RAILS_MASTER_KEY}
-ENV RAILS_ENV production
-
-ENV RAILS_LOG_TO_STDOUT true
-ENV RAILS_SERVE_STATIC_FILES true
-ENV EXECJS_RUNTIME Disabled
-
-ARG app_path=/pong/
-WORKDIR ${app_path}
 EXPOSE 3000
-
 COPY entrypoint.sh /usr/bin/
 
 RUN apk --update --no-cache add \
@@ -118,7 +115,7 @@ RUN apk --update --no-cache add \
     && chmod +x /usr/bin/entrypoint.sh
 
 COPY --from=prod_bundle /usr/local/bundle/ /usr/local/bundle/
-COPY --from=prod_bundle ${app_path} ${app_path}
+COPY --from=prod_bundle $APP_PATH $APP_PATH
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["rails", "server", "-b", "0.0.0.0"]

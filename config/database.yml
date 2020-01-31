@@ -4,8 +4,6 @@ default: &default
   timeout: 5000
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: postgres
-  # username: <%= ENV['DB_USER'] || 'rails' %>
-  # password: <%= ENV['DB_PASSWORD'] || 'rails' %>
   username: rails
   password: rails
   port: 5432
@@ -21,3 +19,5 @@ test:
 production:
   <<: *default
   database: pong_production
+  username: <%= Rails.application.credentials.dig(:production, :postgres, :username) %>
+  password: <%= Rails.application.credentials.dig(:production, :postgres, :password) %>
