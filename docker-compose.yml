@@ -1,9 +1,14 @@
-version: '3'
+version: '3.4'
 services:
   postgres:
     image: postgres:11.4
-      
+    restart: always
+
   web:
+    build:
+      context: .
+      args:
+        - RAILS_MASTER_KEY
     ports:
       - "3000:3000"
     depends_on:

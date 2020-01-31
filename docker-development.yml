@@ -1,18 +1,24 @@
-version: '3'
+version: '3.4'
 services:
   postgres:
     environment:
       POSTGRES_USER: rails
       POSTGRES_PASSWORD: rails
-      
+    volumes:
+      - postgres_dev:/var/lib/postgresql/data
+      - postgres_dev_tmp:/var/run
+
   web:
+    build:
+      target: development
     image: pong_web:dev
     volumes:
       - .:/pong
       - node_modules:/pong/node_modules/
-    # environment:
-    #   DB_USER: rails
-    #   DB_PASSWORD: rails
+      - tmp:/pong/tmp/
 
 volumes:
   node_modules:
+  tmp:
+  postgres_dev:
+  postgres_dev_tmp:
