@@ -41,10 +41,14 @@ class Game::Operation::Create < Trailblazer::Operation
     params[:game][:key].present?
   end
 
-  def kick_old_consumer!(options, cookie:, **)
-    Rails.logger.debug "Game::Create::Operation: kick_old_consumer".tb
-    result = Consumer::Operation::KickPrevious.(cookie: cookie)
-    result.success?
+  def kick_old_consumer!(options, **)
+    if options[:cookie].present?
+      Rails.logger.debug "Game::Create::Operation: kick_old_consumer".tb
+      result = Consumer::Operation::KickPrevious.(cookie: options[:cookie])
+      result.success?
+    else
+      Railway.pass!
+    end
   end
 
   def alert_message!(options, **)
