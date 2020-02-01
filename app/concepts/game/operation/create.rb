@@ -1,3 +1,18 @@
+# Public: Operation to create a Game.
+# ID and Key of a the Game are not required and generated.
+#
+#   Consumer::Operation::Connect.(
+#     params: {
+#       game: {
+#         mode: 'multiplayer',
+#         password: [PASSWORD],
+#         legal: '1'
+#       },
+#       cookie: cookie
+#     }
+#   )
+#
+# Returns a Trailblazer::Operation::Result object.
 class Game::Operation::Create < Trailblazer::Operation
   step Subprocess(Game::Operation::Present)
   step :define_id!

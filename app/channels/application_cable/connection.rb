@@ -12,10 +12,11 @@ module ApplicationCable
     end
 
     def disconnect
-      if Consumer.exists?(id: consumer_cookie&.[](:value))
+      cookie = cookie_helper(name: "consumer")
+      if Consumer.exists?(id: cookie&.[](:value))
         update_consumer
         result = Consumer::Operation::Disconnect.(id: current_consumer.id)
-        ConsumerDisconnectJob.set(wait: 5.seconds).perform_later(cookie: consumer_cookie)
+        ConsumerDisconnectJob.set(wait: 5.seconds).perform_later(cookie: cookie)
 
         Rails.logger.debug "A User Disconnected. ID: #{current_consumer&.id} | Active Instances: #{current_consumer&.instance_count}".socket
         Rails.logger.debug "A User Disconnected. Started ActiveJob: ConsumerDisconnectJob".socket
@@ -26,7 +27,8 @@ module ApplicationCable
 
     private
     def update_consumer
-      self.current_consumer = Consumer.find_by(id: consumer_cookie&.[](:value))
+      cookie = cookie_helper(name: "consumer")
+      self.current_consumer = Consumer.find_by(id: cookie&.[](:value))
     end
   end
 end
