@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticated?
-    cookie = consumer_cookie
+    cookie = cookie_helper(name: "consumer")
     if Consumer.exists?(id: cookie&.[](:value))
       consumer = Consumer.find(cookie[:value])
       consumer_game_id = consumer.consumable[:game_id].presence || consumer.consumable[:id]
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
 
   def check_password!
     game = Game.find_by(id: params[:game_id])
-    cookie = protect_cookie
+    cookie = cookie_helper(name: "protect")
     if game.present? && !game.protect
       Rails.logger.debug "Game is not Password-Protected".green
       true
@@ -77,6 +77,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale!
+    puts "COOKIE IS COMING: ..."
+    puts cookie_helper(name: "consumer")
     lang = params[:lang]
     if lang.blank?
       Rails.logger.debug "Applicationcontroller: before_action set_language: No language selected: Going to Auto-Select language and redirect".red

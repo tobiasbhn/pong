@@ -1,3 +1,12 @@
+# Public: Operation to increase the count of active Instances of a Consumer.
+#
+# Examples
+#
+#     Consumer::Operation::Connect.(
+#       id: Consumer[:id]
+#     )
+#
+# Returns a Trailblazer::Operation::Result object.
 class Consumer::Operation::Connect < Trailblazer::Operation
   step :model!
   step :manipulate!
