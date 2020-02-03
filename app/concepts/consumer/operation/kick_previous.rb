@@ -1,3 +1,12 @@
+# Public: Operation to Destroy a Consumer if he rejoins with other ID.
+#
+# Examples
+#
+#     Consumer::Operation::KickPrevious.(
+#       id: Consumer[:id]
+#     )
+#
+# Returns a Trailblazer::Operation::Result object.
 class Consumer::Operation::KickPrevious < Trailblazer::Operation
   step :present?, fast_track: true
   step :model!, fast_track: true
@@ -30,6 +39,6 @@ class Consumer::Operation::KickPrevious < Trailblazer::Operation
   end
 
   def destroy!(options, model:, **)
-    model.destroy
+    Consumer::Operation::Destroy.(id: model[:id])
   end
 end

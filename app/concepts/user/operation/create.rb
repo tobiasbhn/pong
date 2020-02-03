@@ -1,3 +1,18 @@
+# Public: Operation to create a User.
+#
+#   User::Operation::Create.(
+#     params: {
+#       user: {
+#         name: 'Tobi',
+#         game_id: '12345',
+#         game_key: 'f43g4',
+#         legal: '1'
+#       },
+#       cookie: cookie
+#     }
+#   )
+#
+# Returns a Trailblazer::Operation::Result object.
 class User::Operation::Create < Trailblazer::Operation
   step Subprocess(User::Operation::Present)
   step :check_username!
