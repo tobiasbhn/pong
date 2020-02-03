@@ -45,11 +45,11 @@ module Game::Contract
       }
 
     validate do
-      if mode != 'multiplayer' && protect.to_i == 1
+      if mode != 'multiplayer' && protect == '1'
         errors.add(:protect, "Dieser Modus darf nicht protected sein.")
       end
 
-      if mode == 'multiplayer' && password.blank? && protect.to_i == 1
+      if mode == 'multiplayer' && password.blank? && protect == '1'
         errors.add(:password, "Darf nicht leer sein.")
       end
     end

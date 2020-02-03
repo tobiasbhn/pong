@@ -6,15 +6,7 @@ class Game::Operation::CreateTest < ActiveSupport::TestCase
 
   test 'should succeed creating party game' do
     assert_difference 'Game.count' do
-      params = {
-        game: {
-          mode: 'party',
-          protect: '0',
-          password: '',
-          legal: '1'
-        }
-      }
-      assert result = Game::Operation::Create.(params: params)
+      assert result = Game::Operation::Create.(params: game_params)
 
       assert result.success?
       assert result['contract.default'].errors.blank?
@@ -31,14 +23,7 @@ class Game::Operation::CreateTest < ActiveSupport::TestCase
 
   test 'should succeed creating multiplayer game' do
     assert_difference 'Game.count' do
-      params = {
-        game: {
-          mode: 'multiplayer',
-          protect: '1',
-          password: '12345678',
-          legal: '1'
-        }
-      }
+      params = game_params(mode: 'multiplayer', protect: '1', password: '12345678')
       assert result = Game::Operation::Create.(params: params)
 
       assert result.success?
@@ -56,15 +41,7 @@ class Game::Operation::CreateTest < ActiveSupport::TestCase
 
   test 'should succeed creating splitscreen game' do
     assert_difference 'Game.count' do
-      params = {
-        game: {
-          mode: 'splitscreen',
-          protect: '0',
-          password: '',
-          legal: '1'
-        }
-      }
-      assert result = Game::Operation::Create.(params: params)
+      assert result = Game::Operation::Create.(params: game_params(mode: 'splitscreen'))
 
       assert result.success?
       assert result['contract.default'].errors.blank?
@@ -81,30 +58,12 @@ class Game::Operation::CreateTest < ActiveSupport::TestCase
 
   test 'should only acceppt offered modes' do
     assert_no_difference 'Game.count' do
-      params = {
-        game: {
-          mode: 'no_mode',
-          protect: '0',
-          password: '',
-          legal: '0'
-        }
-      }
-      assert result = Game::Operation::Create.(params: params)
-
+      assert result = Game::Operation::Create.(params: game_params(mode: 'no_supported_mode'))
       assert result.failure?
       assert result['contract.default'].errors.present?
       assert_equal "is not included in the list", result['contract.default'].errors[:mode].first
 
-      params = {
-        game: {
-          mode: true,
-          protect: '0',
-          password: '',
-          legal: '0'
-        }
-      }
-      assert result = Game::Operation::Create.(params: params)
-
+      assert result = Game::Operation::Create.(params: game_params(mode: true))
       assert result.failure?
       assert result['contract.default'].errors.present?
       assert_equal "is not included in the list", result['contract.default'].errors[:mode].first
@@ -113,16 +72,7 @@ class Game::Operation::CreateTest < ActiveSupport::TestCase
 
   test 'should only succeed with accepted legals' do
     assert_no_difference 'Game.count' do
-      params = {
-        game: {
-          mode: 'multiplayer',
-          protect: '0',
-          password: '',
-          legal: '0'
-        }
-      }
-      assert result = Game::Operation::Create.(params: params)
-
+      assert result = Game::Operation::Create.(params: game_params(legal: '0'))
       assert result.failure?
       assert result['contract.default'].errors.present?
       assert_equal "You need to accept this", result['contract.default'].errors[:legal].first
@@ -131,30 +81,14 @@ class Game::Operation::CreateTest < ActiveSupport::TestCase
 
   test 'should only allow password in multiplayer mode' do
     assert_no_difference 'Game.count' do
-      params = {
-        game: {
-          mode: 'party',
-          protect: '1',
-          password: 'but_i_will_use_a_password',
-          legal: '1'
-        }
-      }
+      params = game_params(protect: '1', password: '12345678')
       assert result = Game::Operation::Create.(params: params)
-
       assert result.failure?
       assert result['contract.default'].errors.present?
       assert_equal "Dieser Modus darf nicht protected sein.", result['contract.default'].errors[:protect].first
 
-      params = {
-        game: {
-          mode: 'splitscreen',
-          protect: '1',
-          password: 'but_i_will_use_a_password',
-          legal: '1'
-        }
-      }
+      params = game_params(mode: 'splitscreen', protect: '1', password: '12345678')
       assert result = Game::Operation::Create.(params: params)
-
       assert result.failure?
       assert result['contract.default'].errors.present?
       assert_equal "Dieser Modus darf nicht protected sein.", result['contract.default'].errors[:protect].first
@@ -163,16 +97,8 @@ class Game::Operation::CreateTest < ActiveSupport::TestCase
 
   test 'should request password if protected' do
     assert_no_difference 'Game.count' do
-      params = {
-        game: {
-          mode: 'multiplayer',
-          protect: '1',
-          password: '',
-          legal: '0'
-        }
-      }
+      params = game_params(mode: 'multiplayer', protect: '1')
       assert result = Game::Operation::Create.(params: params)
-
       assert result.failure?
       assert result['contract.default'].errors.present?
       assert_equal "Darf nicht leer sein.", result['contract.default'].errors[:password].first
