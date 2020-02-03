@@ -5,9 +5,7 @@ FROM ruby:2.6.5-alpine AS base
 LABEL maintainer="Tobias Bohn <info@tobiasbohn.com>"
 
 ARG APP_PATH=/pong/
-ARG RAILS_MASTER_KEY
-ENV APP_PATH=$APP_PATH \
-    RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+ENV APP_PATH=$APP_PATH
 
 WORKDIR $APP_PATH
 
@@ -61,6 +59,8 @@ RUN bundle install --without development test -j4 --retry 3 \
     && find /usr/local/bundle/gems/ -name "*.o" -delete
 
 COPY . $APP_PATH
+
+ARG RAILS_MASTER_KEY
 RUN yarn install --check-files --prod \
     && RAILS_ENV=production bundle exec rake assets:precompile \
     && rm -rf node_modules tmp/cache app/assets vendor/assets lib/assets spec

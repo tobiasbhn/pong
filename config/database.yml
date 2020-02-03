@@ -19,5 +19,5 @@ test:
 production:
   <<: *default
   database: pong_production
-  username: <%= Rails.application.credentials.dig(:production, :postgres, :username) %>
-  password: <%= Rails.application.credentials.dig(:production, :postgres, :password) %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>

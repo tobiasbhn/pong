@@ -2,10 +2,8 @@ version: '3.4'
 services:
   postgres:
     environment:
-      POSTGRES_USER: secret_db_username
-      POSTGRES_PASSWORD: secret_db_password
-      # POSTGRES_USER: <%= Rails.application.credentials.dig(:production, :postgres, :username) %>
-      # POSTGRES_PASSWORD: <%= Rails.application.credentials.dig(:production, :postgres, :password) %>
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - /var/lib/pong/data/db/production:/var/lib/postgresql/data
 
@@ -13,4 +11,6 @@ services:
     image: pong_web:prod
     restart: always
     environment:
-      TEST: <%= Rails.application.credentials.dig(:production, :postgres, :username) %>
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
