@@ -7,7 +7,6 @@ class User::Operation::Create < Trailblazer::Operation
   fail :alert_message!
 
   def check_username!(options, params:, **)
-    Rails.logger.debug "User::Create::Operation: check_username".tb
     if params[:user][:name].blank?
       params[:user][:name] = "noname"
     else
@@ -16,13 +15,11 @@ class User::Operation::Create < Trailblazer::Operation
   end
 
   def kick_old_consumer!(options, cookie:, **)
-    Rails.logger.debug "User::Create::Operation: kick_old_consumer".tb
     result = Consumer::Operation::KickPrevious.(cookie: cookie)
     result.success?
   end
 
   def alert_message!(options, **)
-    Rails.logger.debug "User::Create::Operation: alert_message".tb
     options[:flash_alert] = "User Create Error"
   end
 end

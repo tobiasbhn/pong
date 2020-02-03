@@ -16,16 +16,13 @@ module Pong
       if model.present?
         json = JSON.generate({ value: model[:id], time: model[:created_at] })
         cookies.encrypted["_pong_#{name}"] = json
-        Rails.logger.debug "Cookie Request: Cookie(name: #{name}) was set to: #{json}".cookie
         return true
       else
         cookie = cookies.encrypted["_pong_#{name}"]
         if cookie.present?
           parsed = JSON.parse(cookie)
-          Rails.logger.debug "Cookie Request: Cookie(name: #{name}) was returned: { value: #{parsed['value']}, time: \"#{parsed['time']}\" }".cookie
           return { value: parsed["value"], time: parsed["time"] }
         else
-          Rails.logger.debug "Cookie Request: Cookie(name: #{name}) was requested, but is not present".cookie
           return nil
         end
       end
