@@ -18,14 +18,14 @@ You will find detailed information on how to install the docker dependencies her
 ## docker & docker-compose
 Build Image:
 ```bash
-docker build . -t pong_web:dev --target development --build-arg RAILS_MASTER_KEY=XXXXXXXXXXXX
-docker build . -t pong_web:prod --target production --build-arg RAILS_MASTER_KEY=XXXXXXXXXXXX
+DOCKER_BUILDKIT=1 docker build . -t pong_web:dev --target development --build-arg RAILS_MASTER_KEY=XXXXXXXXXXXX
+DOCKER_BUILDKIT=1 docker build . -t pong_web:prod --target production --build-arg RAILS_MASTER_KEY=XXXXXXXXXXXX
 ```
 
 Start Container:
 ```bash
 docker-compose up -d
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
 ```
 
 Stop container:
