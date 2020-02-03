@@ -1,0 +1,16 @@
+version: '3.4'
+services:
+  postgres:
+    environment:
+      POSTGRES_USER: secret_db_username
+      POSTGRES_PASSWORD: secret_db_password
+      # POSTGRES_USER: <%= Rails.application.credentials.dig(:production, :postgres, :username) %>
+      # POSTGRES_PASSWORD: <%= Rails.application.credentials.dig(:production, :postgres, :password) %>
+    volumes:
+      - /var/lib/pong/data/db/production:/var/lib/postgresql/data
+
+  web:
+    image: pong_web:prod
+    restart: always
+    environment:
+      TEST: <%= Rails.application.credentials.dig(:production, :postgres, :username) %>

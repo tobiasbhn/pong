@@ -1,0 +1,23 @@
+version: '3.4'
+services:
+  postgres:
+    environment:
+      POSTGRES_USER: rails
+      POSTGRES_PASSWORD: rails
+    volumes:
+      - /var/lib/pong/data/db/development:/var/lib/postgresql/data
+
+  web:
+    image: pong_web:dev
+    volumes:
+      - .:/pong
+      - web_node_modules:/pong/node_modules/
+      - web_tmp:/pong/tmp/
+
+volumes:
+  web_node_modules:
+  web_tmp: &tmp_fs
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
