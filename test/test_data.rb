@@ -3,14 +3,14 @@ module TestData
   #
   # Returns a Game.
   def game
-    @game ||= create_game()
+    @game ||= create_game
   end
 
   # Public: Helper method to find or create an User.
   #
   # Returns a User.
   def user
-    @user ||= create_user()
+    @user ||= create_user
   end
 
   # Public: Helper method to find or create a Consumer.
@@ -23,8 +23,31 @@ module TestData
   # Public: Helper method to create a Game.
   #
   # Returns a Game.
-  def create_game
-    # TODO
+  def create_game(**options)
+    result = Game::Operation::Create.(params: game_params(**options))
+
+    if result.failed?
+      message = result['contract.default']&.errors&.full_messages&.join("\n") || result.inspect
+      raise Exception.new('Trailblazer Operation failed: ' + message)
+    end
+
+    result[:model]
+  end
+
+  # Public: Helper to build params for Game::Operation::Create.
+  #
+  # Returns a ActionController::Parameters.
+  def game_params(**options)
+    ActionController::Parameters.new(
+      {
+        game: {
+          mode: 'party',
+          protect: '0',
+          password: '',
+          legal: '1'
+        }.merge(**options)
+      }
+    )
   end
 
   # Public: Helper method to create an User.
@@ -41,6 +64,6 @@ module TestData
   #
   # Returns a Hash with a Value a Time Attribute.
   def dummy_cookie(value:, time: Time.now)
-    @consumer_cookie || = { value: value, time: time }
+    { value: value, time: time }
   end
 end
