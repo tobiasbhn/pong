@@ -1,3 +1,12 @@
+# Public: Operation to decrease the count of active Instances of a Consumer.
+#
+# Examples
+#
+#     Consumer::Operation::Disconnect.(
+#       id: Consumer[:id]
+#     )
+#
+# Returns a Trailblazer::Operation::Result object.
 class Consumer::Operation::Disconnect < Trailblazer::Operation
   step :model!
   step :manipulate!
