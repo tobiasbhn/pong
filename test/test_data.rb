@@ -42,7 +42,6 @@ module TestData
       {
         game: {
           mode: 'party',
-          protect: '0',
           password: '',
           legal: '1'
         }.merge(**options)

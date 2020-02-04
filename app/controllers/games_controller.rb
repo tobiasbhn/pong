@@ -21,7 +21,7 @@ class GamesController < ApplicationController
 
     if result.success?
       cookie_helper(name: "consumer", model: result[:model].consumer)
-      cookie_helper(name: "protect", model: result[:model]) if result[:model].protect
+      cookie_helper(name: "protect", model: result[:model]) if result[:model].password_digest.present?
       redirect_to game_path(game_id: result[:model].id)
     else
       flash[:alert] = "Game creation error"

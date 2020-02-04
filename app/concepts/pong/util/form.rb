@@ -5,12 +5,8 @@ module Pong::Util::Form
   end
 
   def validation_class(model, attribute)
-    if no_validation?(model)
-      ''
-    elsif model.respond_to?(:errors) && model.errors.key?(attribute.to_sym)
+    if model.respond_to?(:errors) && model.errors.key?(attribute.to_sym) && !no_validation?(model)
       ' is-invalid'
-    else
-      ' is-valid'
     end
   end
 
