@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   def check_password!
     game = Game.find_by(id: params[:game_id])
     cookie = cookie_helper(name: "protect")
-    if game.present? && !game.protect
+    if game.present? && game.password_digest.blank?
       true
     elsif game.present?
       if cookie&.[](:value) == game.id && cookie&.[](:time).to_time.to_i == game.created_at.to_time.to_i

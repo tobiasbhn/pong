@@ -31,9 +31,7 @@ module Game::Contract
         }
       }
 
-    property :protect
     property :password
-    property :fullscreen
     property :legal,
       validates: {
         presence: true,
@@ -45,12 +43,8 @@ module Game::Contract
       }
 
     validate do
-      if mode != 'multiplayer' && protect == '1'
-        errors.add(:protect, "Dieser Modus darf nicht protected sein.")
-      end
-
-      if mode == 'multiplayer' && password.blank? && protect == '1'
-        errors.add(:password, "Darf nicht leer sein.")
+      if mode == 'splitscreen' && password.present?
+        errors.add(:password, "Dieser Modus darf nicht passwortgeschützt sein.")
       end
     end
   end

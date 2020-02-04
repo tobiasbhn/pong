@@ -4,7 +4,7 @@ class Game < ApplicationRecord
   after_create :create_consumer
   has_secure_password :password, validations: false
 
-  attr_accessor :fullscreen, :legal
+  attr_accessor :legal
 
   def joinable?
     mode == 'party' || mode == 'multiplayer' && users.count == 0

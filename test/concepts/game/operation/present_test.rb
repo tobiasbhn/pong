@@ -13,7 +13,6 @@ class Game::Operation::PresentTest < ActiveSupport::TestCase
       assert_nil model[:id]
       assert_nil model[:key]
       assert_nil model[:mode]
-      assert_equal false, model[:protect]
       assert_nil model[:password_digest]
     end
   end

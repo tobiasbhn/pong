@@ -28,25 +28,16 @@
 
         fieldset name="Protection" id="fieldset-protection"
           legend.h5 Protection
-          .form-group.form-check
-            = f.check_box :protect, class: "form-check-input#{validation_class(model, :protect)}"
-            = f.label :protect, "Protected?", class: 'form-check-label'
-            = validation_text(model, :protect)
           .form-group
             = label_tag :password, "Choose Password"
             = f.password_field :password, class: "form-control form-control-sm#{validation_class(model, :password)}"
             = validation_text(model, :password)
 
         fieldset name="Additional" id="fieldset-additional"
-          .form-group
-            .form-check
-              = f.check_box :fullscreen, class: "form-check-input#{validation_class(model, :fullscreen)}"
-              = f.label :fullscreen, "Open Fullscreen", class: 'form-check-label'
-              = validation_text(model, :fullscreen)
-            .form-check
-              = f.check_box :legal, class: "form-check-input#{validation_class(model, :legal)}", required: 'required'
-              = f.label :legal, "I accept Data Privacy & AGB", class: 'form-check-label'
-              = validation_text(model, :legal)
+          .form-check
+            = f.check_box :legal, class: "form-check-input#{validation_class(model, :legal)}", required: 'required'
+            = f.label :legal, "I accept Data Privacy & AGB", class: 'form-check-label'
+            = validation_text(model, :legal)
 
         .row
           .col-6 = link_to "Back", index_path, class: 'btn btn-secondary'
