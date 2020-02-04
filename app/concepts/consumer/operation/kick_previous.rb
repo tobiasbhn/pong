@@ -13,8 +13,8 @@ class Consumer::Operation::KickPrevious < Trailblazer::Operation
   step :check_consumer!, fast_track: true
   step :destroy!
 
-  def present?(options, cookie:, **)
-    if cookie.present?
+  def present?(options, **)
+    if options[:cookie].present?
       Railway.pass!
     else
       Railway.pass_fast!

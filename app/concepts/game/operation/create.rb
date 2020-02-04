@@ -40,12 +40,8 @@ class Game::Operation::Create < Trailblazer::Operation
   end
 
   def kick_old_consumer!(options, **)
-    if options[:cookie].present?
-      result = Consumer::Operation::KickPrevious.(cookie: options[:cookie])
-      result.success?
-    else
-      Railway.pass!
-    end
+    result = Consumer::Operation::KickPrevious.(cookie: options[:cookie])
+    result.success?
   end
 
   def alert_message!(options, **)

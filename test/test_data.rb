@@ -25,12 +25,10 @@ module TestData
   # Returns a Game.
   def create_game(**options)
     result = Game::Operation::Create.(params: game_params(**options))
-
-    if result.failed?
+    if result.failure?
       message = result['contract.default']&.errors&.full_messages&.join("\n") || result.inspect
       raise Exception.new('Trailblazer Operation failed: ' + message)
     end
-
     result[:model]
   end
 
@@ -54,6 +52,22 @@ module TestData
   # Returns a User.
   def create_user
     # TODO
+  end
+
+  # Public: Helper to build params for User::Operation::Create.
+  #
+  # Returns a ActionController::Parameters.
+  def user_params(**options)
+    ActionController::Parameters.new(
+      {
+        user: {
+          name: 'testname',
+          game_id: @game[:id].to_s,
+          game_key: @game[:key].to_s,
+          legal: '1'
+        }.merge(**options)
+      }
+    )
   end
 
   # Public: Helper to return a Dummy Cookie.
